@@ -1,0 +1,357 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>VistaAgendarCita.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Lab2_U3_CorreaAnahi</a> &gt; <a href="index.source.html" class="el_package">vista</a> &gt; <span class="el_source">VistaAgendarCita.java</span></div><h1>VistaAgendarCita.java</h1><pre class="source lang-java linenums">package vista;
+
+import controlador.ControladorCitas;
+import javax.swing.*;
+import javax.swing.border.*;
+import java.awt.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+
+public class VistaAgendarCita extends JFrame {
+
+    private ControladorCitas controlador;
+    private JTextField txtNombre, txtEmail, txtTelefono;
+    private JComboBox&lt;String&gt; comboHorarios;
+    private JButton btnAgendar, btnActualizar, btnVolver;
+
+    private List&lt;LocalDateTime&gt; horariosActuales;
+
+<span class="fc" id="L20">    private DateTimeFormatter formatter</span>
+<span class="fc" id="L21">            = DateTimeFormatter.ofPattern(&quot;dd/MM/yyyy HH:mm&quot;);</span>
+
+<span class="fc" id="L23">    public VistaAgendarCita() {</span>
+<span class="fc" id="L24">        configurarVentana();</span>
+<span class="fc" id="L25">        inicializarComponentes();</span>
+<span class="fc" id="L26">    }</span>
+
+    private void configurarVentana() {
+<span class="fc" id="L29">        setTitle(&quot;🗓️ Sistema de Gestión de Citas - Agendar&quot;);</span>
+<span class="fc" id="L30">        setSize(700, 700);</span>
+<span class="fc" id="L31">        setDefaultCloseOperation(DISPOSE_ON_CLOSE);</span>
+<span class="fc" id="L32">        setLocationRelativeTo(null);</span>
+<span class="fc" id="L33">        setLayout(new BorderLayout(15, 15));</span>
+<span class="fc" id="L34">        getContentPane().setBackground(new Color(240, 242, 245));</span>
+<span class="fc" id="L35">    }</span>
+
+    private void inicializarComponentes() {
+<span class="fc" id="L38">        add(crearPanelTitulo(), BorderLayout.NORTH);</span>
+<span class="fc" id="L39">        add(crearPanelFormulario(), BorderLayout.CENTER);</span>
+<span class="fc" id="L40">        add(crearPanelBotones(), BorderLayout.SOUTH);</span>
+<span class="fc" id="L41">    }</span>
+
+    private JPanel crearPanelTitulo() {
+<span class="fc" id="L44">        JPanel panel = new JPanel();</span>
+<span class="fc" id="L45">        panel.setBackground(new Color(41, 128, 185));</span>
+<span class="fc" id="L46">        panel.setBorder(new EmptyBorder(25, 20, 25, 20));</span>
+
+<span class="fc" id="L48">        JLabel lblTitulo = new JLabel(&quot; Agendar Nueva Cita&quot;);</span>
+<span class="fc" id="L49">        lblTitulo.setFont(new Font(&quot;Segoe UI&quot;, Font.BOLD, 30));</span>
+<span class="fc" id="L50">        lblTitulo.setForeground(Color.WHITE);</span>
+
+<span class="fc" id="L52">        JLabel lblSub = new JLabel(&quot;Complete el formulario para reservar su cita médica&quot;);</span>
+<span class="fc" id="L53">        lblSub.setFont(new Font(&quot;Segoe UI&quot;, Font.PLAIN, 15));</span>
+<span class="fc" id="L54">        lblSub.setForeground(new Color(236, 240, 241));</span>
+
+<span class="fc" id="L56">        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));</span>
+<span class="fc" id="L57">        lblTitulo.setAlignmentX(Component.CENTER_ALIGNMENT);</span>
+<span class="fc" id="L58">        lblSub.setAlignmentX(Component.CENTER_ALIGNMENT);</span>
+
+<span class="fc" id="L60">        panel.add(lblTitulo);</span>
+<span class="fc" id="L61">        panel.add(Box.createVerticalStrut(8));</span>
+<span class="fc" id="L62">        panel.add(lblSub);</span>
+
+<span class="fc" id="L64">        return panel;</span>
+    }
+
+    private JPanel crearPanelFormulario() {
+<span class="fc" id="L68">        JPanel panel = new JPanel(new GridBagLayout());</span>
+<span class="fc" id="L69">        panel.setBackground(Color.WHITE);</span>
+<span class="fc" id="L70">        panel.setBorder(BorderFactory.createCompoundBorder(</span>
+                new EmptyBorder(30, 30, 30, 30),
+                new LineBorder(new Color(189, 195, 199), 1, true)
+        ));
+
+<span class="fc" id="L75">        GridBagConstraints gbc = new GridBagConstraints();</span>
+<span class="fc" id="L76">        gbc.insets = new Insets(12, 12, 12, 12);</span>
+<span class="fc" id="L77">        gbc.fill = GridBagConstraints.HORIZONTAL;</span>
+
+        // Nombre
+<span class="fc" id="L80">        gbc.gridx = 0;</span>
+<span class="fc" id="L81">        gbc.gridy = 0;</span>
+<span class="fc" id="L82">        gbc.anchor = GridBagConstraints.WEST;</span>
+<span class="fc" id="L83">        panel.add(crearLabel(&quot; Nombre Completo:&quot;), gbc);</span>
+
+<span class="fc" id="L85">        gbc.gridx = 1;</span>
+<span class="fc" id="L86">        txtNombre = crearTextField();</span>
+<span class="fc" id="L87">        txtNombre.setToolTipText(&quot;Ingrese su nombre completo&quot;);</span>
+<span class="fc" id="L88">        panel.add(txtNombre, gbc);</span>
+
+        // Email
+<span class="fc" id="L91">        gbc.gridx = 0;</span>
+<span class="fc" id="L92">        gbc.gridy = 1;</span>
+<span class="fc" id="L93">        panel.add(crearLabel(&quot; Email:&quot;), gbc);</span>
+
+<span class="fc" id="L95">        gbc.gridx = 1;</span>
+<span class="fc" id="L96">        txtEmail = crearTextField();</span>
+<span class="fc" id="L97">        txtEmail.setToolTipText(&quot;ejemplo@correo.com&quot;);</span>
+<span class="fc" id="L98">        panel.add(txtEmail, gbc);</span>
+
+        // Teléfono
+<span class="fc" id="L101">        gbc.gridx = 0;</span>
+<span class="fc" id="L102">        gbc.gridy = 2;</span>
+<span class="fc" id="L103">        panel.add(crearLabel(&quot; Teléfono:&quot;), gbc);</span>
+
+<span class="fc" id="L105">        gbc.gridx = 1;</span>
+<span class="fc" id="L106">        txtTelefono = crearTextField();</span>
+<span class="fc" id="L107">        txtTelefono.setToolTipText(&quot;Ingrese su número de teléfono&quot;);</span>
+<span class="fc" id="L108">        panel.add(txtTelefono, gbc);</span>
+
+        // Horario
+<span class="fc" id="L111">        gbc.gridx = 0;</span>
+<span class="fc" id="L112">        gbc.gridy = 3;</span>
+<span class="fc" id="L113">        panel.add(crearLabel(&quot;? Horario Disponible:&quot;), gbc);</span>
+
+<span class="fc" id="L115">        gbc.gridx = 1;</span>
+<span class="fc" id="L116">        comboHorarios = new JComboBox&lt;&gt;();</span>
+<span class="fc" id="L117">        comboHorarios.setFont(new Font(&quot;Segoe UI&quot;, Font.PLAIN, 14));</span>
+<span class="fc" id="L118">        comboHorarios.setPreferredSize(new Dimension(350, 40));</span>
+<span class="fc" id="L119">        comboHorarios.setBackground(Color.WHITE);</span>
+<span class="fc" id="L120">        panel.add(comboHorarios, gbc);</span>
+
+        // Panel de información adicional
+<span class="fc" id="L123">        gbc.gridx = 0;</span>
+<span class="fc" id="L124">        gbc.gridy = 4;</span>
+<span class="fc" id="L125">        gbc.gridwidth = 2;</span>
+<span class="fc" id="L126">        gbc.insets = new Insets(20, 12, 12, 12);</span>
+<span class="fc" id="L127">        panel.add(crearPanelInfo(), gbc);</span>
+
+<span class="fc" id="L129">        return panel;</span>
+    }
+
+    private JPanel crearPanelInfo() {
+<span class="fc" id="L133">        JPanel panel = new JPanel();</span>
+<span class="fc" id="L134">        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));</span>
+<span class="fc" id="L135">        panel.setBackground(new Color(236, 240, 241));</span>
+<span class="fc" id="L136">        panel.setBorder(new EmptyBorder(15, 15, 15, 15));</span>
+
+<span class="fc" id="L138">        JLabel lblInfo = new JLabel(&quot;ℹ️ Información Importante&quot;);</span>
+<span class="fc" id="L139">        lblInfo.setFont(new Font(&quot;Segoe UI&quot;, Font.BOLD, 13));</span>
+<span class="fc" id="L140">        lblInfo.setAlignmentX(Component.LEFT_ALIGNMENT);</span>
+
+<span class="fc" id="L142">        JLabel lblDetalle1 = new JLabel(&quot;• Las citas se agendan con 24 horas de anticipación&quot;);</span>
+<span class="fc" id="L143">        lblDetalle1.setFont(new Font(&quot;Segoe UI&quot;, Font.PLAIN, 12));</span>
+<span class="fc" id="L144">        lblDetalle1.setAlignmentX(Component.LEFT_ALIGNMENT);</span>
+
+<span class="fc" id="L146">        JLabel lblDetalle2 = new JLabel(&quot;• Duración aproximada: 30 minutos&quot;);</span>
+<span class="fc" id="L147">        lblDetalle2.setFont(new Font(&quot;Segoe UI&quot;, Font.PLAIN, 12));</span>
+<span class="fc" id="L148">        lblDetalle2.setAlignmentX(Component.LEFT_ALIGNMENT);</span>
+
+<span class="fc" id="L150">        JLabel lblDetalle3 = new JLabel(&quot;• Puede cancelar su cita desde 'Mis Citas'&quot;);</span>
+<span class="fc" id="L151">        lblDetalle3.setFont(new Font(&quot;Segoe UI&quot;, Font.PLAIN, 12));</span>
+<span class="fc" id="L152">        lblDetalle3.setAlignmentX(Component.LEFT_ALIGNMENT);</span>
+
+<span class="fc" id="L154">        panel.add(lblInfo);</span>
+<span class="fc" id="L155">        panel.add(Box.createVerticalStrut(8));</span>
+<span class="fc" id="L156">        panel.add(lblDetalle1);</span>
+<span class="fc" id="L157">        panel.add(Box.createVerticalStrut(3));</span>
+<span class="fc" id="L158">        panel.add(lblDetalle2);</span>
+<span class="fc" id="L159">        panel.add(Box.createVerticalStrut(3));</span>
+<span class="fc" id="L160">        panel.add(lblDetalle3);</span>
+
+<span class="fc" id="L162">        return panel;</span>
+    }
+
+    private JLabel crearLabel(String texto) {
+<span class="fc" id="L166">        JLabel l = new JLabel(texto);</span>
+<span class="fc" id="L167">        l.setFont(new Font(&quot;Segoe UI&quot;, Font.BOLD, 15));</span>
+<span class="fc" id="L168">        l.setForeground(new Color(44, 62, 80));</span>
+<span class="fc" id="L169">        return l;</span>
+    }
+
+    private JTextField crearTextField() {
+<span class="fc" id="L173">        JTextField t = new JTextField();</span>
+<span class="fc" id="L174">        t.setFont(new Font(&quot;Segoe UI&quot;, Font.PLAIN, 14));</span>
+<span class="fc" id="L175">        t.setPreferredSize(new Dimension(350, 40));</span>
+<span class="fc" id="L176">        t.setBorder(BorderFactory.createCompoundBorder(</span>
+                new LineBorder(new Color(189, 195, 199), 1, true),
+                new EmptyBorder(5, 10, 5, 10)
+        ));
+<span class="fc" id="L180">        return t;</span>
+    }
+
+    private JPanel crearPanelBotones() {
+<span class="fc" id="L184">        JPanel panel = new JPanel(new FlowLayout(FlowLayout.CENTER, 15, 20));</span>
+<span class="fc" id="L185">        panel.setBackground(new Color(240, 242, 245));</span>
+
+<span class="fc" id="L187">        btnVolver = crearBoton(&quot; Volver al Menú&quot;, new Color(52, 73, 94));</span>
+<span class="fc" id="L188">        btnActualizar = crearBoton(&quot; Actualizar Horarios&quot;, new Color(52, 152, 219));</span>
+<span class="fc" id="L189">        btnAgendar = crearBoton(&quot; Agendar Cita&quot;, new Color(46, 204, 113));</span>
+
+<span class="pc" id="L191">        btnVolver.addActionListener(e -&gt; dispose());</span>
+<span class="fc" id="L192">        btnActualizar.addActionListener(e -&gt; {</span>
+<span class="nc" id="L193">            controlador.actualizarHorariosDisponibles();</span>
+<span class="nc" id="L194">            mostrarMensaje(&quot;Horarios actualizados&quot;);</span>
+<span class="nc" id="L195">        });</span>
+<span class="pc" id="L196">        btnAgendar.addActionListener(e -&gt; agendarCita());</span>
+
+<span class="fc" id="L198">        panel.add(btnVolver);</span>
+<span class="fc" id="L199">        panel.add(btnActualizar);</span>
+<span class="fc" id="L200">        panel.add(btnAgendar);</span>
+
+<span class="fc" id="L202">        return panel;</span>
+    }
+
+    private JButton crearBoton(String texto, Color color) {
+<span class="fc" id="L206">        JButton b = new JButton(texto);</span>
+<span class="fc" id="L207">        b.setBackground(color);</span>
+<span class="fc" id="L208">        b.setForeground(Color.WHITE);</span>
+<span class="fc" id="L209">        b.setFont(new Font(&quot;Segoe UI&quot;, Font.BOLD, 14));</span>
+<span class="fc" id="L210">        b.setPreferredSize(new Dimension(210, 45));</span>
+<span class="fc" id="L211">        b.setBorderPainted(false);</span>
+<span class="fc" id="L212">        b.setFocusPainted(false);</span>
+<span class="fc" id="L213">        b.setCursor(new Cursor(Cursor.HAND_CURSOR));</span>
+
+        // Efecto hover
+<span class="fc" id="L216">        b.addMouseListener(new java.awt.event.MouseAdapter() {</span>
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+<span class="nc" id="L218">                b.setBackground(color.brighter());</span>
+<span class="nc" id="L219">            }</span>
+
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+<span class="nc" id="L222">                b.setBackground(color);</span>
+<span class="nc" id="L223">            }</span>
+        });
+
+<span class="fc" id="L226">        return b;</span>
+    }
+
+    // CORREGIDO: Mejor validación antes de agendar
+    private void agendarCita() {
+        // Validar que se haya seleccionado un horario
+<span class="nc bnc" id="L232" title="All 4 branches missed.">        if (comboHorarios.getSelectedIndex() == -1 || </span>
+            horariosActuales == null || 
+<span class="nc bnc" id="L234" title="All 2 branches missed.">            horariosActuales.isEmpty()) {</span>
+<span class="nc" id="L235">            mostrarError(&quot;Por favor, seleccione un horario disponible&quot;);</span>
+<span class="nc" id="L236">            return;</span>
+        }
+
+        // Obtener datos del formulario
+<span class="nc" id="L240">        String nombre = txtNombre.getText().trim();</span>
+<span class="nc" id="L241">        String email = txtEmail.getText().trim();</span>
+<span class="nc" id="L242">        String telefono = txtTelefono.getText().trim();</span>
+
+        // Validaciones
+<span class="nc bnc" id="L245" title="All 2 branches missed.">        if (nombre.isEmpty()) {</span>
+<span class="nc" id="L246">            mostrarError(&quot;El nombre es obligatorio&quot;);</span>
+<span class="nc" id="L247">            txtNombre.requestFocus();</span>
+<span class="nc" id="L248">            return;</span>
+        }
+
+<span class="nc bnc" id="L251" title="All 2 branches missed.">        if (email.isEmpty()) {</span>
+<span class="nc" id="L252">            mostrarError(&quot;El email es obligatorio&quot;);</span>
+<span class="nc" id="L253">            txtEmail.requestFocus();</span>
+<span class="nc" id="L254">            return;</span>
+        }
+
+<span class="nc bnc" id="L257" title="All 2 branches missed.">        if (!validarEmail(email)) {</span>
+<span class="nc" id="L258">            mostrarError(&quot;Ingrese un email válido&quot;);</span>
+<span class="nc" id="L259">            txtEmail.requestFocus();</span>
+<span class="nc" id="L260">            return;</span>
+        }
+
+<span class="nc bnc" id="L263" title="All 2 branches missed.">        if (telefono.isEmpty()) {</span>
+<span class="nc" id="L264">            mostrarError(&quot;El teléfono es obligatorio&quot;);</span>
+<span class="nc" id="L265">            txtTelefono.requestFocus();</span>
+<span class="nc" id="L266">            return;</span>
+        }
+
+<span class="nc bnc" id="L269" title="All 2 branches missed.">        if (!validarTelefono(telefono)) {</span>
+<span class="nc" id="L270">            mostrarError(&quot;Ingrese un teléfono válido (solo números)&quot;);</span>
+<span class="nc" id="L271">            txtTelefono.requestFocus();</span>
+<span class="nc" id="L272">            return;</span>
+        }
+
+        // Obtener fecha seleccionada
+<span class="nc" id="L276">        LocalDateTime fecha = horariosActuales.get(comboHorarios.getSelectedIndex());</span>
+
+        // Confirmar con el usuario
+<span class="nc" id="L279">        int confirmacion = JOptionPane.showConfirmDialog(</span>
+                this,
+                &quot;¿Confirmar cita para &quot; + nombre + &quot;\n&quot; +
+<span class="nc" id="L282">                &quot;Fecha: &quot; + fecha.format(formatter) + &quot;?&quot;,</span>
+                &quot;Confirmar Cita&quot;,
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE
+        );
+
+<span class="nc bnc" id="L288" title="All 2 branches missed.">        if (confirmacion == JOptionPane.YES_OPTION) {</span>
+            // Enviar al controlador
+<span class="nc" id="L290">            controlador.agendarCita(nombre, email, telefono, fecha);</span>
+        }
+<span class="nc" id="L292">    }</span>
+
+    // Validar formato de email
+    private boolean validarEmail(String email) {
+<span class="fc" id="L296">        return email.matches(&quot;^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$&quot;);</span>
+    }
+
+    // Validar teléfono (solo números)
+    private boolean validarTelefono(String telefono) {
+<span class="fc" id="L301">        return telefono.matches(&quot;^[0-9]{7,15}$&quot;);</span>
+    }
+
+    // ================== MÉTODOS QUE USA EL CONTROLADOR ==================
+
+    public void setControlador(ControladorCitas c) {
+<span class="nc" id="L307">        this.controlador = c;</span>
+<span class="nc" id="L308">    }</span>
+
+    public void actualizarComboHorarios(List&lt;LocalDateTime&gt; horarios) {
+<span class="fc" id="L311">        horariosActuales = horarios;</span>
+<span class="fc" id="L312">        comboHorarios.removeAllItems();</span>
+
+<span class="fc bfc" id="L314" title="All 2 branches covered.">        if (horarios.isEmpty()) {</span>
+<span class="fc" id="L315">            comboHorarios.addItem(&quot;No hay horarios disponibles&quot;);</span>
+<span class="fc" id="L316">            comboHorarios.setEnabled(false);</span>
+<span class="fc" id="L317">            btnAgendar.setEnabled(false);</span>
+<span class="fc" id="L318">            return;</span>
+        }
+
+<span class="fc" id="L321">        comboHorarios.setEnabled(true);</span>
+<span class="fc" id="L322">        btnAgendar.setEnabled(true);</span>
+
+<span class="fc bfc" id="L324" title="All 2 branches covered.">        for (LocalDateTime h : horarios) {</span>
+<span class="fc" id="L325">            comboHorarios.addItem(h.format(formatter));</span>
+<span class="fc" id="L326">        }</span>
+
+<span class="fc" id="L328">        System.out.println(&quot; Horarios cargados: &quot; + horarios.size());</span>
+<span class="fc" id="L329">    }</span>
+
+    public void limpiarFormulario() {
+<span class="fc" id="L332">        txtNombre.setText(&quot;&quot;);</span>
+<span class="fc" id="L333">        txtEmail.setText(&quot;&quot;);</span>
+<span class="fc" id="L334">        txtTelefono.setText(&quot;&quot;);</span>
+<span class="pc bpc" id="L335" title="1 of 2 branches missed.">        if (comboHorarios.getItemCount() &gt; 0) {</span>
+<span class="nc" id="L336">            comboHorarios.setSelectedIndex(0);</span>
+        }
+<span class="fc" id="L338">        txtNombre.requestFocus();</span>
+<span class="fc" id="L339">        System.out.println(&quot;? Formulario limpiado&quot;);</span>
+<span class="fc" id="L340">    }</span>
+
+    public void mostrarMensaje(String m) {
+<span class="nc" id="L343">        JOptionPane.showMessageDialog(this, m, &quot;️ Información&quot;,</span>
+                JOptionPane.INFORMATION_MESSAGE);
+<span class="nc" id="L345">    }</span>
+
+    public void mostrarError(String m) {
+<span class="nc" id="L348">        JOptionPane.showMessageDialog(this, m, &quot; Error&quot;,</span>
+                JOptionPane.ERROR_MESSAGE);
+<span class="nc" id="L350">    }</span>
+
+    public void mostrarExito(String mensaje) {
+<span class="nc" id="L353">        JOptionPane.showMessageDialog(this, mensaje,</span>
+                &quot; Éxito&quot;, JOptionPane.INFORMATION_MESSAGE);
+<span class="nc" id="L355">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

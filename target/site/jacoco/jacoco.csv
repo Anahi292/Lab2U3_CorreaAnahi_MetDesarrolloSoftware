@@ -1,0 +1,40 @@
+GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
+Lab2_U3_CorreaAnahi,dao,CitaDAO,6,251,2,16,2,64,2,14,0,7
+Lab2_U3_CorreaAnahi,dao,MongoConexion,3,7,0,0,1,2,1,1,1,1
+Lab2_U3_CorreaAnahi,dao,UsuarioDAO,26,8,0,0,6,4,1,1,1,1
+Lab2_U3_CorreaAnahi,com.mycompany.lab2_u3_correaanahi,Lab2_U3_CorreaAnahi,29,0,0,0,13,0,3,0,3,0
+Lab2_U3_CorreaAnahi,controlador,ControladorReportes,0,25,0,0,0,5,0,2,0,2
+Lab2_U3_CorreaAnahi,controlador,ControladorNotificaciones,0,52,0,6,0,14,0,7,0,4
+Lab2_U3_CorreaAnahi,controlador,ControladorCitas,0,68,0,8,0,23,0,8,0,4
+Lab2_U3_CorreaAnahi,controlador,ControladorUsuarios,0,31,0,0,0,6,0,2,0,2
+Lab2_U3_CorreaAnahi,controlador,ControladorCancelarCita,0,61,0,4,0,20,0,7,0,5
+Lab2_U3_CorreaAnahi,controlador,ControladorHorarios,0,48,0,0,0,15,0,4,0,4
+Lab2_U3_CorreaAnahi,vista,VistaGestionHorarios,228,775,6,0,45,129,16,9,13,9
+Lab2_U3_CorreaAnahi,vista,MockupReportes,15,1511,0,2,2,207,4,16,4,15
+Lab2_U3_CorreaAnahi,vista,MenuPrincipal,63,393,0,0,18,67,7,6,7,6
+Lab2_U3_CorreaAnahi,vista,MenuPrincipal.new MouseAdapter() {...},19,9,0,0,6,1,3,1,3,1
+Lab2_U3_CorreaAnahi,vista,MockupHistorialCitas.new DefaultTableCellRenderer() {...},78,6,7,0,18,1,6,1,1,1
+Lab2_U3_CorreaAnahi,vista,MockupHistorialCitas,9,1092,0,2,1,152,2,13,2,12
+Lab2_U3_CorreaAnahi,vista,MockupHistorialCitas.new DefaultTableModel() {...},2,8,0,0,1,1,1,1,1,1
+Lab2_U3_CorreaAnahi,vista,MockupReportes.new JPanel() {...},231,6,4,0,29,1,3,1,1,1
+Lab2_U3_CorreaAnahi,vista,MockupReportes.new JPanel() {...},221,6,2,0,22,1,2,1,1,1
+Lab2_U3_CorreaAnahi,vista,MockupReportes.new MouseAdapter() {...},13,9,0,0,4,1,2,1,2,1
+Lab2_U3_CorreaAnahi,vista,VistaAgendarCita.new MouseAdapter() {...},13,9,0,0,4,1,2,1,2,1
+Lab2_U3_CorreaAnahi,vista,MockupReportes.new DefaultTableModel() {...},2,8,0,0,1,1,1,1,1,1
+Lab2_U3_CorreaAnahi,vista,VistaAgendarCita,152,754,19,5,45,154,18,16,8,14
+Lab2_U3_CorreaAnahi,vista,VistaCancelarCita,179,511,12,2,43,91,17,8,10,8
+Lab2_U3_CorreaAnahi,vista,VistaCancelarCita.new MouseAdapter() {...},13,9,0,0,4,1,2,1,2,1
+Lab2_U3_CorreaAnahi,vista,MockupNotificaciones.new MouseAdapter() {...},13,9,0,0,4,1,2,1,2,1
+Lab2_U3_CorreaAnahi,vista,MockupNotificaciones,9,1031,0,0,1,172,2,12,2,12
+Lab2_U3_CorreaAnahi,vista,VistaCancelarCita.new DefaultTableModel() {...},2,8,0,0,1,1,1,1,1,1
+Lab2_U3_CorreaAnahi,vista,VistaCancelarCita.new DefaultTableCellRenderer() {...},44,6,6,0,9,1,4,1,1,1
+Lab2_U3_CorreaAnahi,vista,VistaGestionHorarios.new MouseAdapter() {...},13,9,0,0,4,1,2,1,2,1
+Lab2_U3_CorreaAnahi,modelo,CalculadoraEstadisticas,27,0,4,0,7,0,5,0,3,0
+Lab2_U3_CorreaAnahi,modelo,GestorCitas,11,223,2,24,5,60,2,23,0,12
+Lab2_U3_CorreaAnahi,modelo,Usuario,0,27,0,0,0,10,0,5,0,5
+Lab2_U3_CorreaAnahi,modelo,ValidadorDatos,0,33,0,12,0,4,0,10,0,4
+Lab2_U3_CorreaAnahi,modelo,ConfiguracionHorario,6,92,0,2,2,28,2,12,2,11
+Lab2_U3_CorreaAnahi,modelo,Cita,0,65,0,0,0,25,0,10,0,10
+Lab2_U3_CorreaAnahi,modelo,GestorHorarios,6,102,0,2,1,17,1,5,1,4
+Lab2_U3_CorreaAnahi,modelo,Reporte,0,15,0,0,0,6,0,3,0,3
+Lab2_U3_CorreaAnahi,modelo,Notificacion,0,19,0,0,0,8,0,4,0,4

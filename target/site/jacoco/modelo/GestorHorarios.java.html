@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>GestorHorarios.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Lab2_U3_CorreaAnahi</a> &gt; <a href="index.source.html" class="el_package">modelo</a> &gt; <span class="el_source">GestorHorarios.java</span></div><h1>GestorHorarios.java</h1><pre class="source lang-java linenums">package modelo;
+
+import java.time.LocalTime;
+import java.util.HashMap;
+import java.util.Map;
+
+public class GestorHorarios {
+
+    private Map&lt;String, ConfiguracionHorario&gt; configuraciones;
+
+<span class="fc" id="L11">    public GestorHorarios() {</span>
+<span class="fc" id="L12">        configuraciones = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L13">        inicializarConfiguraciones();</span>
+<span class="fc" id="L14">    }</span>
+
+    private void inicializarConfiguraciones() {
+<span class="fc" id="L17">        String[] dias = {&quot;Lunes&quot;, &quot;Martes&quot;, &quot;Miércoles&quot;, &quot;Jueves&quot;, &quot;Viernes&quot;, &quot;Sábado&quot;, &quot;Domingo&quot;};</span>
+<span class="fc bfc" id="L18" title="All 2 branches covered.">        for (String dia : dias) {</span>
+<span class="fc" id="L19">            configuraciones.put(dia, new ConfiguracionHorario(dia));</span>
+        }
+        // Domingo desactivado por defecto
+<span class="fc" id="L22">        configuraciones.get(&quot;Domingo&quot;).setActivo(false);</span>
+<span class="fc" id="L23">    }</span>
+
+    public ConfiguracionHorario getConfiguracion(String dia) {
+<span class="fc" id="L26">        return configuraciones.get(dia);</span>
+    }
+
+    public void actualizarConfiguracion(String dia, LocalTime inicio, LocalTime fin,
+            int duracion, int descanso, boolean activo) {
+<span class="fc" id="L31">        ConfiguracionHorario config = configuraciones.get(dia);</span>
+<span class="fc" id="L32">        config.setHoraInicio(inicio);</span>
+<span class="fc" id="L33">        config.setHoraFin(fin);</span>
+<span class="fc" id="L34">        config.setDuracionCita(duracion);</span>
+<span class="fc" id="L35">        config.setTiempoDescanso(descanso);</span>
+<span class="fc" id="L36">        config.setActivo(activo);</span>
+<span class="fc" id="L37">    }</span>
+
+    public Map&lt;String, ConfiguracionHorario&gt; getTodasConfiguraciones() {
+<span class="nc" id="L40">        return new HashMap&lt;&gt;(configuraciones);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

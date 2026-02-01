@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>GestorCitas.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Lab2_U3_CorreaAnahi</a> &gt; <a href="index.source.html" class="el_package">modelo</a> &gt; <span class="el_source">GestorCitas.java</span></div><h1>GestorCitas.java</h1><pre class="source lang-java linenums">package modelo;
+
+import dao.CitaDAO;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
+public class GestorCitas {
+    private List&lt;Cita&gt; citas;
+    private List&lt;LocalDateTime&gt; horariosBase;
+    private CitaDAO dao;
+
+<span class="fc" id="L13">    public GestorCitas() {</span>
+<span class="fc" id="L14">        dao = new CitaDAO();</span>
+<span class="fc" id="L15">        horariosBase = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L16">        inicializarHorarios();</span>
+<span class="fc" id="L17">        cargarCitasDesdeDB(); // CORREGIDO: Cargar citas al iniciar</span>
+<span class="fc" id="L18">    }</span>
+
+    // NUEVO: Cargar citas desde MongoDB
+    private void cargarCitasDesdeDB() {
+<span class="fc" id="L22">        citas = dao.listar();</span>
+<span class="fc" id="L23">        System.out.println(&quot; Citas cargadas en memoria: &quot; + citas.size());</span>
+<span class="fc" id="L24">    }</span>
+
+    private void inicializarHorarios() {
+<span class="fc" id="L27">        LocalDateTime inicio = LocalDateTime.now()</span>
+<span class="fc" id="L28">                .plusDays(1)</span>
+<span class="fc" id="L29">                .withHour(9)</span>
+<span class="fc" id="L30">                .withMinute(0)</span>
+<span class="fc" id="L31">                .withSecond(0)</span>
+<span class="fc" id="L32">                .withNano(0);</span>
+
+<span class="fc bfc" id="L34" title="All 2 branches covered.">        for (int i = 0; i &lt; 10; i++) {</span>
+<span class="fc" id="L35">            horariosBase.add(inicio.plusMinutes(i * 30));</span>
+        }
+<span class="fc" id="L37">    }</span>
+
+    public List&lt;LocalDateTime&gt; getHorariosDisponibles() {
+        // CORREGIDO: Actualizar citas antes de verificar disponibilidad
+<span class="fc" id="L41">        cargarCitasDesdeDB();</span>
+        
+<span class="fc" id="L43">        List&lt;LocalDateTime&gt; disponibles = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L44" title="All 2 branches covered.">        for (LocalDateTime h : horariosBase) {</span>
+<span class="fc bfc" id="L45" title="All 2 branches covered.">            if (esDisponible(h)) {</span>
+<span class="fc" id="L46">                disponibles.add(h);</span>
+            }
+<span class="fc" id="L48">        }</span>
+<span class="fc" id="L49">        return disponibles;</span>
+    }
+
+    // CORREGIDO: Guardar en BD y actualizar memoria
+    public boolean agendarCita(String nombre, String email, String telefono, LocalDateTime fecha) {
+        // Verificar si el horario está disponible
+<span class="fc bfc" id="L55" title="All 2 branches covered.">        if (!esDisponible(fecha)) {</span>
+<span class="fc" id="L56">            System.err.println(&quot; Horario no disponible: &quot; + fecha);</span>
+<span class="fc" id="L57">            return false;</span>
+        }
+
+        // Crear y guardar la cita
+<span class="fc" id="L61">        Cita c = new Cita(nombre, email, telefono, fecha);</span>
+        
+        try {
+<span class="fc" id="L64">            dao.guardar(c);</span>
+            // Recargar citas desde la BD para mantener sincronización
+<span class="fc" id="L66">            cargarCitasDesdeDB();</span>
+<span class="fc" id="L67">            System.out.println(&quot; Cita agendada exitosamente&quot;);</span>
+<span class="fc" id="L68">            return true;</span>
+<span class="nc" id="L69">        } catch (Exception e) {</span>
+<span class="nc" id="L70">            System.err.println(&quot; Error al guardar cita: &quot; + e.getMessage());</span>
+<span class="nc" id="L71">            e.printStackTrace();</span>
+<span class="nc" id="L72">            return false;</span>
+        }
+    }
+
+    private boolean esDisponible(LocalDateTime fecha) {
+<span class="fc bfc" id="L77" title="All 2 branches covered.">        for (Cita c : citas) {</span>
+            // Solo considerar citas activas (no canceladas)
+<span class="fc bfc" id="L79" title="All 2 branches covered.">            if (c.getFechaHora().equals(fecha) &amp;&amp; </span>
+<span class="pc bpc" id="L80" title="1 of 2 branches missed.">                !c.getEstado().equalsIgnoreCase(&quot;Cancelada&quot;)) {</span>
+<span class="fc" id="L81">                return false;</span>
+            }
+<span class="fc" id="L83">        }</span>
+<span class="fc" id="L84">        return true;</span>
+    }
+
+    // CORREGIDO: Obtener citas actualizadas desde BD
+    public List&lt;Cita&gt; getCitas() {
+<span class="fc" id="L89">        cargarCitasDesdeDB(); // Siempre obtener datos frescos</span>
+<span class="fc" id="L90">        return new ArrayList&lt;&gt;(citas); // Retornar copia para evitar modificaciones</span>
+    }
+
+    // CORREGIDO: Cancelar y actualizar memoria
+    public boolean cancelarCita(int id) {
+<span class="fc" id="L95">        boolean exito = dao.cancelar(id);</span>
+<span class="fc bfc" id="L96" title="All 2 branches covered.">        if (exito) {</span>
+<span class="fc" id="L97">            cargarCitasDesdeDB(); // Actualizar memoria</span>
+        }
+<span class="fc" id="L99">        return exito;</span>
+    }
+
+    // CORREGIDO: Eliminar y actualizar memoria
+    public boolean eliminarCita(int id) {
+<span class="fc" id="L104">        boolean exito = dao.eliminar(id);</span>
+<span class="fc bfc" id="L105" title="All 2 branches covered.">        if (exito) {</span>
+<span class="fc" id="L106">            cargarCitasDesdeDB(); // Actualizar memoria</span>
+        }
+<span class="fc" id="L108">        return exito;</span>
+    }
+
+    // Métodos adicionales útiles
+    public Cita buscarCitaPorId(int id) {
+<span class="fc bfc" id="L113" title="All 2 branches covered.">        for (Cita c : citas) {</span>
+<span class="pc bpc" id="L114" title="1 of 2 branches missed.">            if (c.getId() == id) {</span>
+<span class="fc" id="L115">                return c;</span>
+            }
+<span class="nc" id="L117">        }</span>
+<span class="fc" id="L118">        return null;</span>
+    }
+
+    public List&lt;Cita&gt; getCitasActivas() {
+<span class="fc" id="L122">        List&lt;Cita&gt; activas = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L123" title="All 2 branches covered.">        for (Cita c : getCitas()) {</span>
+<span class="fc bfc" id="L124" title="All 2 branches covered.">            if (!c.getEstado().equalsIgnoreCase(&quot;Cancelada&quot;)) {</span>
+<span class="fc" id="L125">                activas.add(c);</span>
+            }
+<span class="fc" id="L127">        }</span>
+<span class="fc" id="L128">        return activas;</span>
+    }
+
+    public int contarCitas() {
+<span class="fc" id="L132">        return getCitas().size();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

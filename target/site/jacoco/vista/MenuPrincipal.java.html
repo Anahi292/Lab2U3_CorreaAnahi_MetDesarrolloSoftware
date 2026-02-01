@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MenuPrincipal.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Lab2_U3_CorreaAnahi</a> &gt; <a href="index.source.html" class="el_package">vista</a> &gt; <span class="el_source">MenuPrincipal.java</span></div><h1>MenuPrincipal.java</h1><pre class="source lang-java linenums">package vista;
+
+import modelo.*;
+import controlador.*;
+import javax.swing.*;
+import javax.swing.border.*;
+import java.awt.*;
+
+/**
+ * MENÚ PRINCIPAL - DASHBOARD
+ * SISTEMA DE GESTIÓN DE CITAS
+ */
+public class MenuPrincipal extends JFrame {
+
+    private GestorCitas gestorCitas;
+    private GestorHorarios gestorHorarios;
+
+<span class="fc" id="L18">    public MenuPrincipal() {</span>
+<span class="fc" id="L19">        gestorCitas = new GestorCitas();</span>
+<span class="fc" id="L20">        gestorHorarios = new GestorHorarios();</span>
+
+<span class="fc" id="L22">        configurarVentana();</span>
+<span class="fc" id="L23">        cargarComponentes();</span>
+<span class="fc" id="L24">    }</span>
+
+    private void configurarVentana() {
+<span class="fc" id="L27">        setTitle(&quot;Sistema de Gestión de Citas&quot;);</span>
+<span class="fc" id="L28">        setSize(1000, 650);</span>
+<span class="fc" id="L29">        setLocationRelativeTo(null);</span>
+<span class="fc" id="L30">        setDefaultCloseOperation(EXIT_ON_CLOSE);</span>
+<span class="fc" id="L31">        setLayout(new BorderLayout());</span>
+<span class="fc" id="L32">        getContentPane().setBackground(new Color(245, 247, 250));</span>
+<span class="fc" id="L33">    }</span>
+
+    private void cargarComponentes() {
+<span class="fc" id="L36">        add(crearEncabezado(), BorderLayout.NORTH);</span>
+<span class="fc" id="L37">        add(crearDashboard(), BorderLayout.CENTER);</span>
+<span class="fc" id="L38">    }</span>
+
+    // ================== ENCABEZADO ==================
+
+    private JPanel crearEncabezado() {
+<span class="fc" id="L43">        JPanel panel = new JPanel(new BorderLayout());</span>
+<span class="fc" id="L44">        panel.setBackground(new Color(33, 44, 62));</span>
+<span class="fc" id="L45">        panel.setBorder(new EmptyBorder(20, 30, 20, 30));</span>
+
+<span class="fc" id="L47">        JLabel titulo = new JLabel(&quot;Sistema de Gestión de Citas&quot;);</span>
+<span class="fc" id="L48">        titulo.setForeground(Color.WHITE);</span>
+<span class="fc" id="L49">        titulo.setFont(new Font(&quot;Segoe UI&quot;, Font.BOLD, 28));</span>
+
+<span class="fc" id="L51">        JLabel subtitulo = new JLabel(&quot;Panel principal del sistema&quot;);</span>
+<span class="fc" id="L52">        subtitulo.setForeground(new Color(200, 200, 200));</span>
+<span class="fc" id="L53">        subtitulo.setFont(new Font(&quot;Segoe UI&quot;, Font.PLAIN, 14));</span>
+
+<span class="fc" id="L55">        JPanel textos = new JPanel();</span>
+<span class="fc" id="L56">        textos.setOpaque(false);</span>
+<span class="fc" id="L57">        textos.setLayout(new BoxLayout(textos, BoxLayout.Y_AXIS));</span>
+<span class="fc" id="L58">        textos.add(titulo);</span>
+<span class="fc" id="L59">        textos.add(subtitulo);</span>
+
+<span class="fc" id="L61">        panel.add(textos, BorderLayout.WEST);</span>
+
+<span class="fc" id="L63">        return panel;</span>
+    }
+
+    // ================== DASHBOARD ==================
+
+    private JPanel crearDashboard() {
+<span class="fc" id="L69">        JPanel panel = new JPanel(new GridLayout(3, 2, 25, 25));</span>
+<span class="fc" id="L70">        panel.setBorder(new EmptyBorder(30, 30, 30, 30));</span>
+<span class="fc" id="L71">        panel.setBackground(new Color(245, 247, 250));</span>
+
+<span class="fc" id="L73">        panel.add(crearTarjeta(&quot;Agendar Nueva Cita&quot;, new Color(93, 173, 226), this::abrirAgendarCita));</span>
+<span class="fc" id="L74">        panel.add(crearTarjeta(&quot;Mis Citas Agendadas&quot;, new Color(243, 156, 18), this::abrirCancelarCita));</span>
+<span class="fc" id="L75">        panel.add(crearTarjeta(&quot;Configuración de Horarios&quot;, new Color(155, 89, 182), this::abrirGestionHorarios));</span>
+<span class="fc" id="L76">        panel.add(crearTarjeta(&quot;Mi Historial de Citas&quot;, new Color(52, 152, 219), this::abrirHistorialCitas));</span>
+<span class="fc" id="L77">        panel.add(crearTarjeta(&quot;Configuración de Notificaciones&quot;, new Color(248, 196, 113), this::abrirNotificaciones));</span>
+<span class="fc" id="L78">        panel.add(crearTarjeta(&quot;Dashboard de Reportes y Estadísticas&quot;, new Color(86, 101, 115), this::abrirReportes));</span>
+
+<span class="fc" id="L80">        return panel;</span>
+    }
+
+    // ================== TARJETA ==================
+
+    private JPanel crearTarjeta(String titulo, Color color, Runnable accion) {
+
+<span class="fc" id="L87">        JPanel tarjeta = new JPanel(new BorderLayout());</span>
+<span class="fc" id="L88">        tarjeta.setBackground(Color.WHITE);</span>
+<span class="fc" id="L89">        tarjeta.setBorder(new CompoundBorder(</span>
+                new LineBorder(color, 2, true),
+                new EmptyBorder(30, 30, 30, 30)
+        ));
+<span class="fc" id="L93">        tarjeta.setCursor(new Cursor(Cursor.HAND_CURSOR));</span>
+
+<span class="fc" id="L95">        JLabel lblTitulo = new JLabel(titulo);</span>
+<span class="fc" id="L96">        lblTitulo.setFont(new Font(&quot;Segoe UI&quot;, Font.BOLD, 18));</span>
+<span class="fc" id="L97">        lblTitulo.setForeground(new Color(44, 62, 80));</span>
+
+<span class="fc" id="L99">        JButton boton = new JButton(&quot;ABRIR&quot;);</span>
+<span class="fc" id="L100">        boton.setBackground(color);</span>
+<span class="fc" id="L101">        boton.setForeground(Color.WHITE);</span>
+<span class="fc" id="L102">        boton.setFocusPainted(false);</span>
+<span class="fc" id="L103">        boton.setBorderPainted(false);</span>
+<span class="fc" id="L104">        boton.setFont(new Font(&quot;Segoe UI&quot;, Font.BOLD, 14));</span>
+<span class="fc" id="L105">        boton.setPreferredSize(new Dimension(150, 40));</span>
+
+<span class="fc" id="L107">        JPanel centro = new JPanel(new BorderLayout());</span>
+<span class="fc" id="L108">        centro.setOpaque(false);</span>
+<span class="fc" id="L109">        centro.add(lblTitulo, BorderLayout.CENTER);</span>
+
+<span class="fc" id="L111">        JPanel sur = new JPanel();</span>
+<span class="fc" id="L112">        sur.setOpaque(false);</span>
+<span class="fc" id="L113">        sur.add(boton);</span>
+
+<span class="fc" id="L115">        tarjeta.add(centro, BorderLayout.CENTER);</span>
+<span class="fc" id="L116">        tarjeta.add(sur, BorderLayout.SOUTH);</span>
+
+<span class="pc" id="L118">        boton.addActionListener(e -&gt; accion.run());</span>
+
+<span class="fc" id="L120">        tarjeta.addMouseListener(new java.awt.event.MouseAdapter() {</span>
+            public void mouseEntered(java.awt.event.MouseEvent e) {
+<span class="nc" id="L122">                tarjeta.setBackground(new Color(250, 250, 250));</span>
+<span class="nc" id="L123">            }</span>
+
+            public void mouseExited(java.awt.event.MouseEvent e) {
+<span class="nc" id="L126">                tarjeta.setBackground(Color.WHITE);</span>
+<span class="nc" id="L127">            }</span>
+
+            public void mouseClicked(java.awt.event.MouseEvent e) {
+<span class="nc" id="L130">                accion.run();</span>
+<span class="nc" id="L131">            }</span>
+        });
+
+<span class="fc" id="L134">        return tarjeta;</span>
+    }
+
+    // ================== ACCIONES ==================
+
+    private void abrirAgendarCita() {
+<span class="nc" id="L140">        VistaAgendarCita vista = new VistaAgendarCita();</span>
+<span class="nc" id="L141">        ControladorCitas c = new ControladorCitas(gestorCitas, vista);</span>
+<span class="nc" id="L142">        c.iniciar();</span>
+<span class="nc" id="L143">    }</span>
+
+    private void abrirCancelarCita() {
+<span class="nc" id="L146">        VistaCancelarCita vista = new VistaCancelarCita();</span>
+<span class="nc" id="L147">        ControladorCancelarCita c = new ControladorCancelarCita(gestorCitas, vista);</span>
+<span class="nc" id="L148">        c.iniciar();</span>
+<span class="nc" id="L149">    }</span>
+
+    private void abrirGestionHorarios() {
+<span class="nc" id="L152">        VistaGestionHorarios vista = new VistaGestionHorarios();</span>
+<span class="nc" id="L153">        ControladorHorarios c = new ControladorHorarios(gestorHorarios, vista);</span>
+<span class="nc" id="L154">        c.iniciar();</span>
+<span class="nc" id="L155">    }</span>
+
+    private void abrirHistorialCitas() {
+<span class="nc" id="L158">        new MockupHistorialCitas().setVisible(true);</span>
+<span class="nc" id="L159">    }</span>
+
+    private void abrirNotificaciones() {
+<span class="nc" id="L162">        new MockupNotificaciones().setVisible(true);</span>
+<span class="nc" id="L163">    }</span>
+
+    private void abrirReportes() {
+<span class="nc" id="L166">        new MockupReportes().setVisible(true);</span>
+<span class="nc" id="L167">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

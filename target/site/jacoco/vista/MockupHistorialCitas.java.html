@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MockupHistorialCitas.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Lab2_U3_CorreaAnahi</a> &gt; <a href="index.source.html" class="el_package">vista</a> &gt; <span class="el_source">MockupHistorialCitas.java</span></div><h1>MockupHistorialCitas.java</h1><pre class="source lang-java linenums">package vista;
+
+import javax.swing.*;
+import javax.swing.border.*;
+import javax.swing.table.*;
+import java.awt.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
+public class MockupHistorialCitas extends JFrame {
+    private JTable tablaHistorial;
+    private DefaultTableModel modeloTabla;
+    private JComboBox&lt;String&gt; comboFiltroEstado;
+    private JTextField txtFechaInicio, txtFechaFin;
+    private JButton btnFiltrar, btnLimpiar, btnExportar, btnVolver;
+    private JLabel lblTotalCitas, lblAtendidas, lblCanceladas, lblPendientes;
+    
+<span class="fc" id="L18">    public MockupHistorialCitas() {</span>
+<span class="fc" id="L19">        configurarVentana();</span>
+<span class="fc" id="L20">        inicializarComponentes();</span>
+<span class="fc" id="L21">        cargarDatosSimulados();</span>
+<span class="fc" id="L22">    }</span>
+    
+    private void configurarVentana() {
+<span class="fc" id="L25">        setTitle(&quot;Historial de Citas - Vista del Usuario&quot;);</span>
+<span class="fc" id="L26">        setSize(1000, 700);</span>
+<span class="fc" id="L27">        setDefaultCloseOperation(DISPOSE_ON_CLOSE);</span>
+<span class="fc" id="L28">        setLocationRelativeTo(null);</span>
+<span class="fc" id="L29">        setLayout(new BorderLayout(15, 15));</span>
+<span class="fc" id="L30">        getContentPane().setBackground(new Color(236, 240, 241));</span>
+<span class="fc" id="L31">    }</span>
+    
+    private void inicializarComponentes() {
+<span class="fc" id="L34">        add(crearPanelTitulo(), BorderLayout.NORTH);</span>
+<span class="fc" id="L35">        add(crearPanelCentral(), BorderLayout.CENTER);</span>
+<span class="fc" id="L36">        add(crearPanelEstadisticas(), BorderLayout.SOUTH);</span>
+<span class="fc" id="L37">    }</span>
+    
+    private JPanel crearPanelTitulo() {
+<span class="fc" id="L40">        JPanel panel = new JPanel(new BorderLayout());</span>
+<span class="fc" id="L41">        panel.setBackground(new Color(41, 128, 185));</span>
+<span class="fc" id="L42">        panel.setBorder(new EmptyBorder(20, 20, 20, 20));</span>
+        
+<span class="fc" id="L44">        JLabel lblTitulo = new JLabel(&quot;Mi Historial de Citas&quot;);</span>
+<span class="fc" id="L45">        lblTitulo.setFont(new Font(&quot;Segoe UI&quot;, Font.BOLD, 28));</span>
+<span class="fc" id="L46">        lblTitulo.setForeground(Color.WHITE);</span>
+        
+<span class="fc" id="L48">        JLabel lblSubtitulo = new JLabel(&quot;Consulta todas tus citas pasadas y futuras&quot;);</span>
+<span class="fc" id="L49">        lblSubtitulo.setFont(new Font(&quot;Segoe UI&quot;, Font.PLAIN, 14));</span>
+<span class="fc" id="L50">        lblSubtitulo.setForeground(new Color(236, 240, 241));</span>
+        
+<span class="fc" id="L52">        JPanel panelTexto = new JPanel();</span>
+<span class="fc" id="L53">        panelTexto.setLayout(new BoxLayout(panelTexto, BoxLayout.Y_AXIS));</span>
+<span class="fc" id="L54">        panelTexto.setBackground(new Color(41, 128, 185));</span>
+<span class="fc" id="L55">        lblTitulo.setAlignmentX(Component.LEFT_ALIGNMENT);</span>
+<span class="fc" id="L56">        lblSubtitulo.setAlignmentX(Component.LEFT_ALIGNMENT);</span>
+<span class="fc" id="L57">        panelTexto.add(lblTitulo);</span>
+<span class="fc" id="L58">        panelTexto.add(Box.createVerticalStrut(5));</span>
+<span class="fc" id="L59">        panelTexto.add(lblSubtitulo);</span>
+        
+<span class="fc" id="L61">        panel.add(panelTexto, BorderLayout.WEST);</span>
+        
+        // Botón volver
+<span class="fc" id="L64">        btnVolver = new JButton(&quot;⬅️ Volver al Menú&quot;);</span>
+<span class="fc" id="L65">        btnVolver.setFont(new Font(&quot;Segoe UI&quot;, Font.BOLD, 14));</span>
+<span class="fc" id="L66">        btnVolver.setBackground(new Color(52, 73, 94));</span>
+<span class="fc" id="L67">        btnVolver.setForeground(Color.WHITE);</span>
+<span class="fc" id="L68">        btnVolver.setFocusPainted(false);</span>
+<span class="fc" id="L69">        btnVolver.setBorderPainted(false);</span>
+<span class="fc" id="L70">        btnVolver.setPreferredSize(new Dimension(180, 40));</span>
+<span class="fc" id="L71">        btnVolver.setCursor(new Cursor(Cursor.HAND_CURSOR));</span>
+<span class="pc" id="L72">        btnVolver.addActionListener(e -&gt; dispose());</span>
+<span class="fc" id="L73">        panel.add(btnVolver, BorderLayout.EAST);</span>
+        
+<span class="fc" id="L75">        return panel;</span>
+    }
+    
+    private JPanel crearPanelCentral() {
+<span class="fc" id="L79">        JPanel panel = new JPanel(new BorderLayout(10, 10));</span>
+<span class="fc" id="L80">        panel.setBackground(new Color(236, 240, 241));</span>
+<span class="fc" id="L81">        panel.setBorder(new EmptyBorder(15, 15, 15, 15));</span>
+        
+<span class="fc" id="L83">        panel.add(crearPanelFiltros(), BorderLayout.NORTH);</span>
+<span class="fc" id="L84">        panel.add(crearPanelTabla(), BorderLayout.CENTER);</span>
+        
+<span class="fc" id="L86">        return panel;</span>
+    }
+    
+    private JPanel crearPanelFiltros() {
+<span class="fc" id="L90">        JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT, 15, 10));</span>
+<span class="fc" id="L91">        panel.setBackground(Color.WHITE);</span>
+<span class="fc" id="L92">        panel.setBorder(BorderFactory.createCompoundBorder(</span>
+            new LineBorder(new Color(189, 195, 199), 1, true),
+            new EmptyBorder(15, 15, 15, 15)
+        ));
+        
+        // Estado
+<span class="fc" id="L98">        JLabel lblEstado = crearLabel(&quot;Estado:&quot;);</span>
+<span class="fc" id="L99">        String[] estados = {&quot;Todos&quot;, &quot;Pendiente&quot;, &quot;Atendida&quot;, &quot;Cancelada&quot;, &quot;No Presentada&quot;};</span>
+<span class="fc" id="L100">        comboFiltroEstado = new JComboBox&lt;&gt;(estados);</span>
+<span class="fc" id="L101">        comboFiltroEstado.setPreferredSize(new Dimension(150, 30));</span>
+<span class="fc" id="L102">        comboFiltroEstado.setFont(new Font(&quot;Segoe UI&quot;, Font.PLAIN, 13));</span>
+        
+        // Fechas
+<span class="fc" id="L105">        JLabel lblFechaInicio = crearLabel(&quot;Desde:&quot;);</span>
+<span class="fc" id="L106">        txtFechaInicio = new JTextField(&quot;01/01/2026&quot;, 10);</span>
+<span class="fc" id="L107">        txtFechaInicio.setFont(new Font(&quot;Segoe UI&quot;, Font.PLAIN, 13));</span>
+        
+<span class="fc" id="L109">        JLabel lblFechaFin = crearLabel(&quot;Hasta:&quot;);</span>
+<span class="fc" id="L110">        txtFechaFin = new JTextField(&quot;31/12/2026&quot;, 10);</span>
+<span class="fc" id="L111">        txtFechaFin.setFont(new Font(&quot;Segoe UI&quot;, Font.PLAIN, 13));</span>
+        
+        // Botones
+<span class="fc" id="L114">        btnFiltrar = crearBotonPequeño(&quot;Filtrar&quot;, new Color(52, 152, 219));</span>
+<span class="fc" id="L115">        btnLimpiar = crearBotonPequeño(&quot;Limpiar&quot;, new Color(149, 165, 166));</span>
+<span class="fc" id="L116">        btnExportar = crearBotonPequeño(&quot;Exportar PDF&quot;, new Color(231, 76, 60));</span>
+        
+<span class="fc" id="L118">        panel.add(lblEstado);</span>
+<span class="fc" id="L119">        panel.add(comboFiltroEstado);</span>
+<span class="fc" id="L120">        panel.add(lblFechaInicio);</span>
+<span class="fc" id="L121">        panel.add(txtFechaInicio);</span>
+<span class="fc" id="L122">        panel.add(lblFechaFin);</span>
+<span class="fc" id="L123">        panel.add(txtFechaFin);</span>
+<span class="fc" id="L124">        panel.add(btnFiltrar);</span>
+<span class="fc" id="L125">        panel.add(btnLimpiar);</span>
+<span class="fc" id="L126">        panel.add(btnExportar);</span>
+        
+<span class="fc" id="L128">        return panel;</span>
+    }
+    
+    private JPanel crearPanelTabla() {
+<span class="fc" id="L132">        JPanel panel = new JPanel(new BorderLayout());</span>
+<span class="fc" id="L133">        panel.setBackground(Color.WHITE);</span>
+<span class="fc" id="L134">        panel.setBorder(new LineBorder(new Color(189, 195, 199), 1, true));</span>
+        
+<span class="fc" id="L136">        String[] columnas = {&quot;ID&quot;, &quot;Fecha y Hora&quot;, &quot;Estado&quot;, &quot;Notas&quot;, &quot;Acciones&quot;};</span>
+<span class="fc" id="L137">        modeloTabla = new DefaultTableModel(columnas, 0) {</span>
+            @Override
+            public boolean isCellEditable(int row, int column) {
+<span class="nc" id="L140">                return false;</span>
+            }
+        };
+        
+<span class="fc" id="L144">        tablaHistorial = new JTable(modeloTabla);</span>
+<span class="fc" id="L145">        tablaHistorial.setFont(new Font(&quot;Segoe UI&quot;, Font.PLAIN, 13));</span>
+<span class="fc" id="L146">        tablaHistorial.setRowHeight(40);</span>
+<span class="fc" id="L147">        tablaHistorial.getTableHeader().setFont(new Font(&quot;Segoe UI&quot;, Font.BOLD, 14));</span>
+<span class="fc" id="L148">        tablaHistorial.getTableHeader().setBackground(new Color(52, 73, 94));</span>
+<span class="fc" id="L149">        tablaHistorial.getTableHeader().setForeground(Color.WHITE);</span>
+<span class="fc" id="L150">        tablaHistorial.setSelectionBackground(new Color(52, 152, 219));</span>
+<span class="fc" id="L151">        tablaHistorial.setSelectionForeground(Color.WHITE);</span>
+        
+        // Anchos de columnas
+<span class="fc" id="L154">        tablaHistorial.getColumnModel().getColumn(0).setPreferredWidth(60);</span>
+<span class="fc" id="L155">        tablaHistorial.getColumnModel().getColumn(1).setPreferredWidth(180);</span>
+<span class="fc" id="L156">        tablaHistorial.getColumnModel().getColumn(2).setPreferredWidth(120);</span>
+<span class="fc" id="L157">        tablaHistorial.getColumnModel().getColumn(3).setPreferredWidth(300);</span>
+<span class="fc" id="L158">        tablaHistorial.getColumnModel().getColumn(4).setPreferredWidth(150);</span>
+        
+        // Renderer para estado
+<span class="fc" id="L161">        tablaHistorial.getColumnModel().getColumn(2).setCellRenderer(new DefaultTableCellRenderer() {</span>
+            @Override
+            public Component getTableCellRendererComponent(JTable table, Object value,
+                    boolean isSelected, boolean hasFocus, int row, int column) {
+<span class="nc" id="L165">                JLabel label = (JLabel) super.getTableCellRendererComponent(</span>
+                    table, value, isSelected, hasFocus, row, column);
+                
+<span class="nc bnc" id="L168" title="All 2 branches missed.">                if (!isSelected) {</span>
+<span class="nc" id="L169">                    String estado = value.toString();</span>
+<span class="nc bnc" id="L170" title="All 5 branches missed.">                    switch (estado) {</span>
+                        case &quot;Atendida&quot;:
+<span class="nc" id="L172">                            label.setBackground(new Color(46, 204, 113));</span>
+<span class="nc" id="L173">                            label.setForeground(Color.WHITE);</span>
+<span class="nc" id="L174">                            break;</span>
+                        case &quot;Pendiente&quot;:
+<span class="nc" id="L176">                            label.setBackground(new Color(241, 196, 15));</span>
+<span class="nc" id="L177">                            label.setForeground(Color.WHITE);</span>
+<span class="nc" id="L178">                            break;</span>
+                        case &quot;Cancelada&quot;:
+<span class="nc" id="L180">                            label.setBackground(new Color(231, 76, 60));</span>
+<span class="nc" id="L181">                            label.setForeground(Color.WHITE);</span>
+<span class="nc" id="L182">                            break;</span>
+                        case &quot;No Presentada&quot;:
+<span class="nc" id="L184">                            label.setBackground(new Color(149, 165, 166));</span>
+<span class="nc" id="L185">                            label.setForeground(Color.WHITE);</span>
+                            break;
+                    }
+                }
+<span class="nc" id="L189">                label.setHorizontalAlignment(CENTER);</span>
+<span class="nc" id="L190">                label.setOpaque(true);</span>
+<span class="nc" id="L191">                return label;</span>
+            }
+        });
+        
+<span class="fc" id="L195">        JScrollPane scrollPane = new JScrollPane(tablaHistorial);</span>
+<span class="fc" id="L196">        scrollPane.setBorder(null);</span>
+        
+<span class="fc" id="L198">        panel.add(scrollPane, BorderLayout.CENTER);</span>
+        
+<span class="fc" id="L200">        return panel;</span>
+    }
+    
+    private JPanel crearPanelEstadisticas() {
+<span class="fc" id="L204">        JPanel panel = new JPanel(new GridLayout(1, 4, 15, 0));</span>
+<span class="fc" id="L205">        panel.setBackground(new Color(236, 240, 241));</span>
+<span class="fc" id="L206">        panel.setBorder(new EmptyBorder(15, 15, 15, 15));</span>
+        
+<span class="fc" id="L208">        panel.add(crearTarjetaEstadistica(&quot;Total de Citas&quot;, &quot;45&quot;, new Color(52, 152, 219)));</span>
+<span class="fc" id="L209">        panel.add(crearTarjetaEstadistica(&quot;Atendidas&quot;, &quot;38&quot;, new Color(46, 204, 113)));</span>
+<span class="fc" id="L210">        panel.add(crearTarjetaEstadistica(&quot;Canceladas&quot;, &quot;5&quot;, new Color(231, 76, 60)));</span>
+<span class="fc" id="L211">        panel.add(crearTarjetaEstadistica(&quot;Pendientes&quot;, &quot;2&quot;, new Color(241, 196, 15)));</span>
+        
+<span class="fc" id="L213">        return panel;</span>
+    }
+    
+    private JPanel crearTarjetaEstadistica(String titulo, String valor, Color color) {
+<span class="fc" id="L217">        JPanel panel = new JPanel();</span>
+<span class="fc" id="L218">        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));</span>
+<span class="fc" id="L219">        panel.setBackground(color);</span>
+<span class="fc" id="L220">        panel.setBorder(new EmptyBorder(20, 20, 20, 20));</span>
+        
+<span class="fc" id="L222">        JLabel lblTitulo = new JLabel(titulo);</span>
+<span class="fc" id="L223">        lblTitulo.setFont(new Font(&quot;Segoe UI&quot;, Font.BOLD, 14));</span>
+<span class="fc" id="L224">        lblTitulo.setForeground(Color.WHITE);</span>
+<span class="fc" id="L225">        lblTitulo.setAlignmentX(Component.CENTER_ALIGNMENT);</span>
+        
+<span class="fc" id="L227">        JLabel lblValor = new JLabel(valor);</span>
+<span class="fc" id="L228">        lblValor.setFont(new Font(&quot;Segoe UI&quot;, Font.BOLD, 36));</span>
+<span class="fc" id="L229">        lblValor.setForeground(Color.WHITE);</span>
+<span class="fc" id="L230">        lblValor.setAlignmentX(Component.CENTER_ALIGNMENT);</span>
+        
+<span class="fc" id="L232">        panel.add(lblTitulo);</span>
+<span class="fc" id="L233">        panel.add(Box.createVerticalStrut(10));</span>
+<span class="fc" id="L234">        panel.add(lblValor);</span>
+        
+<span class="fc" id="L236">        return panel;</span>
+    }
+    
+    private JLabel crearLabel(String texto) {
+<span class="fc" id="L240">        JLabel label = new JLabel(texto);</span>
+<span class="fc" id="L241">        label.setFont(new Font(&quot;Segoe UI&quot;, Font.BOLD, 13));</span>
+<span class="fc" id="L242">        label.setForeground(new Color(52, 73, 94));</span>
+<span class="fc" id="L243">        return label;</span>
+    }
+    
+    private JButton crearBotonPequeño(String texto, Color color) {
+<span class="fc" id="L247">        JButton btn = new JButton(texto);</span>
+<span class="fc" id="L248">        btn.setFont(new Font(&quot;Segoe UI&quot;, Font.BOLD, 12));</span>
+<span class="fc" id="L249">        btn.setBackground(color);</span>
+<span class="fc" id="L250">        btn.setForeground(Color.WHITE);</span>
+<span class="fc" id="L251">        btn.setFocusPainted(false);</span>
+<span class="fc" id="L252">        btn.setBorderPainted(false);</span>
+<span class="fc" id="L253">        btn.setPreferredSize(new Dimension(140, 30));</span>
+<span class="fc" id="L254">        btn.setCursor(new Cursor(Cursor.HAND_CURSOR));</span>
+        
+        // Solo efecto visual, sin funcionalidad
+<span class="fc" id="L257">        btn.addActionListener(e -&gt; </span>
+<span class="nc" id="L258">            JOptionPane.showMessageDialog(this, </span>
+                &quot;MOCKUP: Esta funcionalidad se implementará en la versión completa&quot;,
+                &quot;Prototipo No Funcional&quot;, 
+                JOptionPane.INFORMATION_MESSAGE)
+        );
+        
+<span class="fc" id="L264">        return btn;</span>
+    }
+    
+    private void cargarDatosSimulados() {
+<span class="fc" id="L268">        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(&quot;dd/MM/yyyy HH:mm&quot;);</span>
+        
+<span class="fc" id="L270">        Object[][] datos = {</span>
+<span class="fc" id="L271">            {1045, &quot;18/01/2026 10:00&quot;, &quot;Pendiente&quot;, &quot;Revisión general&quot;, &quot;Ver detalles&quot;},</span>
+<span class="fc" id="L272">            {1044, &quot;15/01/2026 14:30&quot;, &quot;Atendida&quot;, &quot;Control de seguimiento&quot;, &quot;Ver detalles&quot;},</span>
+<span class="fc" id="L273">            {1043, &quot;10/01/2026 09:00&quot;, &quot;Atendida&quot;, &quot;Primera consulta&quot;, &quot;Ver detalles&quot;},</span>
+<span class="fc" id="L274">            {1042, &quot;05/01/2026 16:00&quot;, &quot;Cancelada&quot;, &quot;Cancelada por el paciente&quot;, &quot;Ver detalles&quot;},</span>
+<span class="fc" id="L275">            {1041, &quot;20/12/2025 11:30&quot;, &quot;Atendida&quot;, &quot;Examen de rutina&quot;, &quot;Ver detalles&quot;},</span>
+<span class="fc" id="L276">            {1040, &quot;15/12/2025 15:00&quot;, &quot;No Presentada&quot;, &quot;No se presentó a la cita&quot;, &quot;Ver detalles&quot;},</span>
+<span class="fc" id="L277">            {1039, &quot;10/12/2025 10:00&quot;, &quot;Atendida&quot;, &quot;Control mensual&quot;, &quot;Ver detalles&quot;},</span>
+<span class="fc" id="L278">            {1038, &quot;05/12/2025 14:00&quot;, &quot;Atendida&quot;, &quot;Consulta de resultados&quot;, &quot;Ver detalles&quot;},</span>
+        };
+        
+<span class="fc bfc" id="L281" title="All 2 branches covered.">        for (Object[] fila : datos) {</span>
+<span class="fc" id="L282">            modeloTabla.addRow(fila);</span>
+        }
+<span class="fc" id="L284">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

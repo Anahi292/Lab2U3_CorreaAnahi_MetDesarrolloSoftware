@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ControladorHorarios.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Lab2_U3_CorreaAnahi</a> &gt; <a href="index.source.html" class="el_package">controlador</a> &gt; <span class="el_source">ControladorHorarios.java</span></div><h1>ControladorHorarios.java</h1><pre class="source lang-java linenums">package controlador;
+
+import modelo.*;
+import vista.VistaGestionHorarios;
+import java.time.LocalTime;
+
+public class ControladorHorarios {
+    private GestorHorarios modelo;
+    private VistaGestionHorarios vista;
+    
+<span class="fc" id="L11">    public ControladorHorarios(GestorHorarios modelo, VistaGestionHorarios vista) {</span>
+<span class="fc" id="L12">        this.modelo = modelo;</span>
+<span class="fc" id="L13">        this.vista = vista;</span>
+<span class="fc" id="L14">        vista.setControlador(this);</span>
+<span class="fc" id="L15">    }</span>
+    
+    public void iniciar() {
+<span class="fc" id="L18">        cargarConfiguracion(&quot;Lunes&quot;);</span>
+<span class="fc" id="L19">        vista.setVisible(true);</span>
+<span class="fc" id="L20">    }</span>
+    
+    public void cargarConfiguracion(String dia) {
+<span class="fc" id="L23">        ConfiguracionHorario config = modelo.getConfiguracion(dia);</span>
+<span class="fc" id="L24">        vista.cargarDatos(config);</span>
+<span class="fc" id="L25">    }</span>
+    
+    public void guardarConfiguracion(String dia, LocalTime inicio, LocalTime fin,
+                                     int duracion, int descanso, boolean activo) {
+<span class="fc" id="L29">        modelo.actualizarConfiguracion(dia, inicio, fin, duracion, descanso, activo);</span>
+<span class="fc" id="L30">        vista.mostrarExito(&quot;✅ Configuración guardada exitosamente para &quot; + dia);</span>
+<span class="fc" id="L31">        cargarConfiguracion(dia);</span>
+<span class="fc" id="L32">    }</span>
+    
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

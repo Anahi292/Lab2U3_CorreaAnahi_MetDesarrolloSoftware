@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>VistaGestionHorarios.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Lab2_U3_CorreaAnahi</a> &gt; <a href="index.source.html" class="el_package">vista</a> &gt; <span class="el_source">VistaGestionHorarios.java</span></div><h1>VistaGestionHorarios.java</h1><pre class="source lang-java linenums">package vista;
+
+import controlador.ControladorHorarios;
+import modelo.ConfiguracionHorario;
+import javax.swing.*;
+import javax.swing.border.*;
+import java.awt.*;
+import java.time.LocalTime;
+
+public class VistaGestionHorarios extends JFrame {
+    private ControladorHorarios controlador;
+    private JComboBox&lt;String&gt; comboDias;
+    private JSpinner spinnerHoraInicio;
+    private JSpinner spinnerHoraFin;
+    private JSpinner spinnerDuracion;
+    private JSpinner spinnerDescanso;
+    private JCheckBox checkActivo;
+    private JLabel lblCapacidad;
+    private JButton btnGuardar, btnCargar, btnVolver;
+    
+<span class="fc" id="L21">    private String[] dias = {&quot;Lunes&quot;, &quot;Martes&quot;, &quot;Miércoles&quot;, &quot;Jueves&quot;, &quot;Viernes&quot;, &quot;Sábado&quot;, &quot;Domingo&quot;};</span>
+    
+<span class="fc" id="L23">    public VistaGestionHorarios() {</span>
+<span class="fc" id="L24">        configurarVentana();</span>
+<span class="fc" id="L25">        inicializarComponentes();</span>
+<span class="fc" id="L26">    }</span>
+    
+    private void configurarVentana() {
+<span class="fc" id="L29">        setTitle(&quot; Gestión de Horarios de Atención&quot;);</span>
+<span class="fc" id="L30">        setSize(700, 700);</span>
+<span class="fc" id="L31">        setDefaultCloseOperation(DISPOSE_ON_CLOSE);</span>
+<span class="fc" id="L32">        setLocationRelativeTo(null);</span>
+<span class="fc" id="L33">        setLayout(new BorderLayout(15, 15));</span>
+<span class="fc" id="L34">        getContentPane().setBackground(new Color(236, 240, 241));</span>
+<span class="fc" id="L35">    }</span>
+    
+    private void inicializarComponentes() {
+<span class="fc" id="L38">        add(crearPanelTitulo(), BorderLayout.NORTH);</span>
+<span class="fc" id="L39">        add(crearPanelFormulario(), BorderLayout.CENTER);</span>
+<span class="fc" id="L40">        add(crearPanelBotones(), BorderLayout.SOUTH);</span>
+<span class="fc" id="L41">    }</span>
+    
+    private JPanel crearPanelTitulo() {
+<span class="fc" id="L44">        JPanel panel = new JPanel();</span>
+<span class="fc" id="L45">        panel.setBackground(new Color(142, 68, 173));</span>
+<span class="fc" id="L46">        panel.setBorder(new EmptyBorder(20, 20, 20, 20));</span>
+        
+<span class="fc" id="L48">        JLabel lblTitulo = new JLabel(&quot;Configuración de Horarios&quot;);</span>
+<span class="fc" id="L49">        lblTitulo.setFont(new Font(&quot;Segoe UI&quot;, Font.BOLD, 28));</span>
+<span class="fc" id="L50">        lblTitulo.setForeground(Color.WHITE);</span>
+        
+<span class="fc" id="L52">        JLabel lblSubtitulo = new JLabel(&quot;Define tu disponibilidad semanal&quot;);</span>
+<span class="fc" id="L53">        lblSubtitulo.setFont(new Font(&quot;Segoe UI&quot;, Font.PLAIN, 14));</span>
+<span class="fc" id="L54">        lblSubtitulo.setForeground(new Color(236, 240, 241));</span>
+        
+<span class="fc" id="L56">        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));</span>
+<span class="fc" id="L57">        lblTitulo.setAlignmentX(Component.CENTER_ALIGNMENT);</span>
+<span class="fc" id="L58">        lblSubtitulo.setAlignmentX(Component.CENTER_ALIGNMENT);</span>
+        
+<span class="fc" id="L60">        panel.add(lblTitulo);</span>
+<span class="fc" id="L61">        panel.add(Box.createVerticalStrut(5));</span>
+<span class="fc" id="L62">        panel.add(lblSubtitulo);</span>
+        
+<span class="fc" id="L64">        return panel;</span>
+    }
+    
+    private JPanel crearPanelFormulario() {
+<span class="fc" id="L68">        JPanel panel = new JPanel(new GridBagLayout());</span>
+<span class="fc" id="L69">        panel.setBackground(Color.WHITE);</span>
+<span class="fc" id="L70">        panel.setBorder(BorderFactory.createCompoundBorder(</span>
+            new EmptyBorder(25, 25, 25, 25),
+            new LineBorder(new Color(189, 195, 199), 1, true)
+        ));
+        
+<span class="fc" id="L75">        GridBagConstraints gbc = new GridBagConstraints();</span>
+<span class="fc" id="L76">        gbc.fill = GridBagConstraints.HORIZONTAL;</span>
+<span class="fc" id="L77">        gbc.insets = new Insets(12, 15, 12, 15);</span>
+        
+        // Día de la semana
+<span class="fc" id="L80">        gbc.gridx = 0; gbc.gridy = 0;</span>
+<span class="fc" id="L81">        panel.add(crearLabel(&quot; Día de la Semana:&quot;), gbc);</span>
+<span class="fc" id="L82">        gbc.gridx = 1;</span>
+<span class="fc" id="L83">        comboDias = new JComboBox&lt;&gt;(dias);</span>
+<span class="fc" id="L84">        comboDias.setFont(new Font(&quot;Segoe UI&quot;, Font.PLAIN, 14));</span>
+<span class="fc" id="L85">        comboDias.setPreferredSize(new Dimension(250, 35));</span>
+<span class="pc" id="L86">        comboDias.addActionListener(e -&gt; cargarConfiguracionActual());</span>
+<span class="fc" id="L87">        panel.add(comboDias, gbc);</span>
+        
+        // Hora inicio
+<span class="fc" id="L90">        gbc.gridx = 0; gbc.gridy = 1;</span>
+<span class="fc" id="L91">        panel.add(crearLabel(&quot; Hora de Inicio:&quot;), gbc);</span>
+<span class="fc" id="L92">        gbc.gridx = 1;</span>
+<span class="fc" id="L93">        SpinnerDateModel modelInicio = new SpinnerDateModel();</span>
+<span class="fc" id="L94">        spinnerHoraInicio = new JSpinner(new SpinnerDateModel());</span>
+<span class="fc" id="L95">        JSpinner.DateEditor editorInicio = new JSpinner.DateEditor(spinnerHoraInicio, &quot;HH:mm&quot;);</span>
+<span class="fc" id="L96">        spinnerHoraInicio.setEditor(editorInicio);</span>
+<span class="fc" id="L97">        spinnerHoraInicio.setFont(new Font(&quot;Segoe UI&quot;, Font.PLAIN, 14));</span>
+<span class="fc" id="L98">        spinnerHoraInicio.setPreferredSize(new Dimension(250, 35));</span>
+<span class="fc" id="L99">        panel.add(spinnerHoraInicio, gbc);</span>
+        
+        // Hora fin
+<span class="fc" id="L102">        gbc.gridx = 0; gbc.gridy = 2;</span>
+<span class="fc" id="L103">        panel.add(crearLabel(&quot; Hora de Fin:&quot;), gbc);</span>
+<span class="fc" id="L104">        gbc.gridx = 1;</span>
+<span class="fc" id="L105">        spinnerHoraFin = new JSpinner(new SpinnerDateModel());</span>
+<span class="fc" id="L106">        JSpinner.DateEditor editorFin = new JSpinner.DateEditor(spinnerHoraFin, &quot;HH:mm&quot;);</span>
+<span class="fc" id="L107">        spinnerHoraFin.setEditor(editorFin);</span>
+<span class="fc" id="L108">        spinnerHoraFin.setFont(new Font(&quot;Segoe UI&quot;, Font.PLAIN, 14));</span>
+<span class="fc" id="L109">        spinnerHoraFin.setPreferredSize(new Dimension(250, 35));</span>
+<span class="fc" id="L110">        panel.add(spinnerHoraFin, gbc);</span>
+        
+        // Duración de cita
+<span class="fc" id="L113">        gbc.gridx = 0; gbc.gridy = 3;</span>
+<span class="fc" id="L114">        panel.add(crearLabel(&quot;️ Duración por Cita (min):&quot;), gbc);</span>
+<span class="fc" id="L115">        gbc.gridx = 1;</span>
+<span class="fc" id="L116">        spinnerDuracion = new JSpinner(new SpinnerNumberModel(30, 15, 120, 15));</span>
+<span class="fc" id="L117">        spinnerDuracion.setFont(new Font(&quot;Segoe UI&quot;, Font.PLAIN, 14));</span>
+<span class="fc" id="L118">        spinnerDuracion.setPreferredSize(new Dimension(250, 35));</span>
+<span class="pc" id="L119">        spinnerDuracion.addChangeListener(e -&gt; actualizarCapacidad());</span>
+<span class="fc" id="L120">        panel.add(spinnerDuracion, gbc);</span>
+        
+        // Tiempo de descanso
+<span class="fc" id="L123">        gbc.gridx = 0; gbc.gridy = 4;</span>
+<span class="fc" id="L124">        panel.add(crearLabel(&quot; Tiempo de Descanso (min):&quot;), gbc);</span>
+<span class="fc" id="L125">        gbc.gridx = 1;</span>
+<span class="fc" id="L126">        spinnerDescanso = new JSpinner(new SpinnerNumberModel(5, 0, 30, 5));</span>
+<span class="fc" id="L127">        spinnerDescanso.setFont(new Font(&quot;Segoe UI&quot;, Font.PLAIN, 14));</span>
+<span class="fc" id="L128">        spinnerDescanso.setPreferredSize(new Dimension(250, 35));</span>
+<span class="pc" id="L129">        spinnerDescanso.addChangeListener(e -&gt; actualizarCapacidad());</span>
+<span class="fc" id="L130">        panel.add(spinnerDescanso, gbc);</span>
+        
+        // Día activo
+<span class="fc" id="L133">        gbc.gridx = 0; gbc.gridy = 5;</span>
+<span class="fc" id="L134">        panel.add(crearLabel(&quot; Día Activo:&quot;), gbc);</span>
+<span class="fc" id="L135">        gbc.gridx = 1;</span>
+<span class="fc" id="L136">        checkActivo = new JCheckBox(&quot;Atender en este día&quot;);</span>
+<span class="fc" id="L137">        checkActivo.setFont(new Font(&quot;Segoe UI&quot;, Font.PLAIN, 14));</span>
+<span class="fc" id="L138">        checkActivo.setBackground(Color.WHITE);</span>
+<span class="fc" id="L139">        checkActivo.setSelected(true);</span>
+<span class="pc" id="L140">        checkActivo.addActionListener(e -&gt; actualizarCapacidad());</span>
+<span class="fc" id="L141">        panel.add(checkActivo, gbc);</span>
+        
+        // Capacidad calculada
+<span class="fc" id="L144">        gbc.gridx = 0; gbc.gridy = 6; gbc.gridwidth = 2;</span>
+<span class="fc" id="L145">        JPanel panelCapacidad = new JPanel(new FlowLayout(FlowLayout.CENTER));</span>
+<span class="fc" id="L146">        panelCapacidad.setBackground(new Color(241, 196, 15));</span>
+<span class="fc" id="L147">        panelCapacidad.setBorder(new EmptyBorder(15, 15, 15, 15));</span>
+<span class="fc" id="L148">        lblCapacidad = new JLabel(&quot;Capacidad: 0 citas por día&quot;);</span>
+<span class="fc" id="L149">        lblCapacidad.setFont(new Font(&quot;Segoe UI&quot;, Font.BOLD, 16));</span>
+<span class="fc" id="L150">        lblCapacidad.setForeground(new Color(52, 73, 94));</span>
+<span class="fc" id="L151">        panelCapacidad.add(lblCapacidad);</span>
+<span class="fc" id="L152">        panel.add(panelCapacidad, gbc);</span>
+        
+<span class="fc" id="L154">        return panel;</span>
+    }
+    
+    private JLabel crearLabel(String texto) {
+<span class="fc" id="L158">        JLabel label = new JLabel(texto);</span>
+<span class="fc" id="L159">        label.setFont(new Font(&quot;Segoe UI&quot;, Font.BOLD, 14));</span>
+<span class="fc" id="L160">        label.setForeground(new Color(52, 73, 94));</span>
+<span class="fc" id="L161">        return label;</span>
+    }
+    
+    private JPanel crearPanelBotones() {
+<span class="fc" id="L165">        JPanel panel = new JPanel(new FlowLayout(FlowLayout.CENTER, 15, 15));</span>
+<span class="fc" id="L166">        panel.setBackground(new Color(236, 240, 241));</span>
+<span class="fc" id="L167">        panel.setBorder(new EmptyBorder(10, 10, 10, 10));</span>
+        
+<span class="fc" id="L169">        btnVolver = crearBoton(&quot;️ Volver al Menú&quot;, new Color(52, 73, 94));</span>
+<span class="pc" id="L170">        btnVolver.addActionListener(e -&gt; dispose());</span>
+        
+<span class="fc" id="L172">        btnCargar = crearBoton(&quot; Cargar Configuración&quot;, new Color(52, 152, 219));</span>
+<span class="pc" id="L173">        btnCargar.addActionListener(e -&gt; cargarConfiguracionActual());</span>
+       
+<span class="fc" id="L175">        btnGuardar = crearBoton(&quot; Guardar Configuración&quot;, new Color(46, 204, 113));</span>
+<span class="pc" id="L176">        btnGuardar.addActionListener(e -&gt; guardarConfiguracion());</span>
+        
+<span class="fc" id="L178">        panel.add(btnVolver);</span>
+<span class="fc" id="L179">        panel.add(btnCargar);</span>
+<span class="fc" id="L180">        panel.add(btnGuardar);</span>
+        
+<span class="fc" id="L182">        return panel;</span>
+    }
+    
+    private JButton crearBoton(String texto, Color color) {
+<span class="fc" id="L186">        JButton btn = new JButton(texto);</span>
+<span class="fc" id="L187">        btn.setFont(new Font(&quot;Segoe UI&quot;, Font.BOLD, 14));</span>
+<span class="fc" id="L188">        btn.setBackground(color);</span>
+<span class="fc" id="L189">        btn.setForeground(Color.WHITE);</span>
+<span class="fc" id="L190">        btn.setFocusPainted(false);</span>
+<span class="fc" id="L191">        btn.setBorderPainted(false);</span>
+<span class="fc" id="L192">        btn.setPreferredSize(new Dimension(220, 45));</span>
+<span class="fc" id="L193">        btn.setCursor(new Cursor(Cursor.HAND_CURSOR));</span>
+        
+<span class="fc" id="L195">        btn.addMouseListener(new java.awt.event.MouseAdapter() {</span>
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+<span class="nc" id="L197">                btn.setBackground(color.darker());</span>
+<span class="nc" id="L198">            }</span>
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+<span class="nc" id="L200">                btn.setBackground(color);</span>
+<span class="nc" id="L201">            }</span>
+        });
+        
+<span class="fc" id="L204">        return btn;</span>
+    }
+    
+    private void cargarConfiguracionActual() {
+<span class="nc" id="L208">        String diaSeleccionado = (String) comboDias.getSelectedItem();</span>
+<span class="nc" id="L209">        controlador.cargarConfiguracion(diaSeleccionado);</span>
+<span class="nc" id="L210">    }</span>
+    
+    private void guardarConfiguracion() {
+<span class="nc" id="L213">        String dia = (String) comboDias.getSelectedItem();</span>
+        
+<span class="nc" id="L215">        java.util.Date dateInicio = (java.util.Date) spinnerHoraInicio.getValue();</span>
+<span class="nc" id="L216">        java.util.Date dateFin = (java.util.Date) spinnerHoraFin.getValue();</span>
+        
+<span class="nc" id="L218">        LocalTime inicio = LocalTime.of(dateInicio.getHours(), dateInicio.getMinutes());</span>
+<span class="nc" id="L219">        LocalTime fin = LocalTime.of(dateFin.getHours(), dateFin.getMinutes());</span>
+        
+<span class="nc bnc" id="L221" title="All 4 branches missed.">        if (fin.isBefore(inicio) || fin.equals(inicio)) {</span>
+<span class="nc" id="L222">            mostrarError(&quot; La hora de fin debe ser posterior a la hora de inicio&quot;);</span>
+<span class="nc" id="L223">            return;</span>
+        }
+        
+<span class="nc" id="L226">        int duracion = (Integer) spinnerDuracion.getValue();</span>
+<span class="nc" id="L227">        int descanso = (Integer) spinnerDescanso.getValue();</span>
+<span class="nc" id="L228">        boolean activo = checkActivo.isSelected();</span>
+        
+<span class="nc" id="L230">        controlador.guardarConfiguracion(dia, inicio, fin, duracion, descanso, activo);</span>
+<span class="nc" id="L231">    }</span>
+    
+    private void actualizarCapacidad() {
+        try {
+<span class="nc" id="L235">            java.util.Date dateInicio = (java.util.Date) spinnerHoraInicio.getValue();</span>
+<span class="nc" id="L236">            java.util.Date dateFin = (java.util.Date) spinnerHoraFin.getValue();</span>
+            
+<span class="nc" id="L238">            int minutosDisponibles = (dateFin.getHours() * 60 + dateFin.getMinutes()) -</span>
+<span class="nc" id="L239">                                   (dateInicio.getHours() * 60 + dateInicio.getMinutes());</span>
+            
+<span class="nc" id="L241">            int duracion = (Integer) spinnerDuracion.getValue();</span>
+<span class="nc" id="L242">            int descanso = (Integer) spinnerDescanso.getValue();</span>
+<span class="nc" id="L243">            int minutosPorCita = duracion + descanso;</span>
+            
+<span class="nc bnc" id="L245" title="All 2 branches missed.">            int capacidad = checkActivo.isSelected() ? minutosDisponibles / minutosPorCita : 0;</span>
+<span class="nc" id="L246">            lblCapacidad.setText(&quot;Capacidad: &quot; + capacidad + &quot; citas por día&quot;);</span>
+<span class="nc" id="L247">        } catch (Exception e) {</span>
+<span class="nc" id="L248">            lblCapacidad.setText(&quot;Capacidad: -- citas por día&quot;);</span>
+<span class="nc" id="L249">        }</span>
+<span class="nc" id="L250">    }</span>
+    
+    public void setControlador(ControladorHorarios controlador) {
+<span class="fc" id="L253">        this.controlador = controlador;</span>
+<span class="fc" id="L254">    }</span>
+    
+    public void cargarDatos(ConfiguracionHorario config) {
+<span class="nc" id="L257">        java.util.Calendar cal = java.util.Calendar.getInstance();</span>
+        
+<span class="nc" id="L259">        cal.set(java.util.Calendar.HOUR_OF_DAY, config.getHoraInicio().getHour());</span>
+<span class="nc" id="L260">        cal.set(java.util.Calendar.MINUTE, config.getHoraInicio().getMinute());</span>
+<span class="nc" id="L261">        spinnerHoraInicio.setValue(cal.getTime());</span>
+        
+<span class="nc" id="L263">        cal.set(java.util.Calendar.HOUR_OF_DAY, config.getHoraFin().getHour());</span>
+<span class="nc" id="L264">        cal.set(java.util.Calendar.MINUTE, config.getHoraFin().getMinute());</span>
+<span class="nc" id="L265">        spinnerHoraFin.setValue(cal.getTime());</span>
+        
+<span class="nc" id="L267">        spinnerDuracion.setValue(config.getDuracionCita());</span>
+<span class="nc" id="L268">        spinnerDescanso.setValue(config.getTiempoDescanso());</span>
+<span class="nc" id="L269">        checkActivo.setSelected(config.isActivo());</span>
+        
+<span class="nc" id="L271">        actualizarCapacidad();</span>
+<span class="nc" id="L272">    }</span>
+    
+    public void mostrarExito(String mensaje) {
+<span class="nc" id="L275">        JOptionPane.showMessageDialog(this, mensaje, &quot;Éxito&quot;, JOptionPane.INFORMATION_MESSAGE);</span>
+<span class="nc" id="L276">    }</span>
+    
+    public void mostrarError(String mensaje) {
+<span class="nc" id="L279">        JOptionPane.showMessageDialog(this, mensaje, &quot;Error&quot;, JOptionPane.ERROR_MESSAGE);</span>
+<span class="nc" id="L280">    }</span>
+}
+
+
+
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

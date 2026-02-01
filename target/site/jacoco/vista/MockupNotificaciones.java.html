@@ -1,0 +1,342 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MockupNotificaciones.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Lab2_U3_CorreaAnahi</a> &gt; <a href="index.source.html" class="el_package">vista</a> &gt; <span class="el_source">MockupNotificaciones.java</span></div><h1>MockupNotificaciones.java</h1><pre class="source lang-java linenums">package vista;
+
+import javax.swing.*;
+import javax.swing.border.*;
+import java.awt.*;
+
+public class MockupNotificaciones extends JFrame {
+    private JCheckBox chkConfirmacion, chkRecordatorio, chkCancelacion, chkReprogramacion;
+    private JComboBox&lt;String&gt; comboRecordatorio;
+    private JTextArea txtPreviewEmail;
+    private JButton btnGuardar, btnProbar, btnRestaurar, btnVolver;
+    
+<span class="fc" id="L13">    public MockupNotificaciones() {</span>
+<span class="fc" id="L14">        configurarVentana();</span>
+<span class="fc" id="L15">        inicializarComponentes();</span>
+<span class="fc" id="L16">    }</span>
+    
+    private void configurarVentana() {
+<span class="fc" id="L19">        setTitle(&quot; Configuración de Notificaciones&quot;);</span>
+<span class="fc" id="L20">        setSize(900, 750);</span>
+<span class="fc" id="L21">        setDefaultCloseOperation(DISPOSE_ON_CLOSE);</span>
+<span class="fc" id="L22">        setLocationRelativeTo(null);</span>
+<span class="fc" id="L23">        setLayout(new BorderLayout(15, 15));</span>
+<span class="fc" id="L24">        getContentPane().setBackground(new Color(236, 240, 241));</span>
+<span class="fc" id="L25">    }</span>
+    
+    private void inicializarComponentes() {
+<span class="fc" id="L28">        add(crearPanelTitulo(), BorderLayout.NORTH);</span>
+        
+<span class="fc" id="L30">        JPanel panelCentral = new JPanel(new GridLayout(1, 2, 15, 0));</span>
+<span class="fc" id="L31">        panelCentral.setBackground(new Color(236, 240, 241));</span>
+<span class="fc" id="L32">        panelCentral.setBorder(new EmptyBorder(15, 15, 15, 15));</span>
+        
+<span class="fc" id="L34">        panelCentral.add(crearPanelConfiguracion());</span>
+<span class="fc" id="L35">        panelCentral.add(crearPanelVistaPrev());</span>
+        
+<span class="fc" id="L37">        add(panelCentral, BorderLayout.CENTER);</span>
+<span class="fc" id="L38">        add(crearPanelBotones(), BorderLayout.SOUTH);</span>
+<span class="fc" id="L39">    }</span>
+    
+    private JPanel crearPanelTitulo() {
+<span class="fc" id="L42">        JPanel panel = new JPanel(new BorderLayout());</span>
+<span class="fc" id="L43">        panel.setBackground(new Color(230, 126, 34));</span>
+<span class="fc" id="L44">        panel.setBorder(new EmptyBorder(20, 20, 20, 20));</span>
+        
+<span class="fc" id="L46">        JLabel lblTitulo = new JLabel(&quot;Configuración de Notificaciones&quot;);</span>
+<span class="fc" id="L47">        lblTitulo.setFont(new Font(&quot;Segoe UI&quot;, Font.BOLD, 28));</span>
+<span class="fc" id="L48">        lblTitulo.setForeground(Color.WHITE);</span>
+        
+<span class="fc" id="L50">        JLabel lblSubtitulo = new JLabel(&quot;Personaliza cómo y cuándo recibes tus notificaciones&quot;);</span>
+<span class="fc" id="L51">        lblSubtitulo.setFont(new Font(&quot;Segoe UI&quot;, Font.PLAIN, 14));</span>
+<span class="fc" id="L52">        lblSubtitulo.setForeground(new Color(236, 240, 241));</span>
+        
+<span class="fc" id="L54">        JPanel panelTexto = new JPanel();</span>
+<span class="fc" id="L55">        panelTexto.setLayout(new BoxLayout(panelTexto, BoxLayout.Y_AXIS));</span>
+<span class="fc" id="L56">        panelTexto.setBackground(new Color(230, 126, 34));</span>
+<span class="fc" id="L57">        lblTitulo.setAlignmentX(Component.LEFT_ALIGNMENT);</span>
+<span class="fc" id="L58">        lblSubtitulo.setAlignmentX(Component.LEFT_ALIGNMENT);</span>
+<span class="fc" id="L59">        panelTexto.add(lblTitulo);</span>
+<span class="fc" id="L60">        panelTexto.add(Box.createVerticalStrut(5));</span>
+<span class="fc" id="L61">        panelTexto.add(lblSubtitulo);</span>
+        
+<span class="fc" id="L63">        panel.add(panelTexto, BorderLayout.WEST);</span>
+        
+        // Botón volver
+<span class="fc" id="L66">        btnVolver = new JButton(&quot;️ Volver&quot;);</span>
+<span class="fc" id="L67">        btnVolver.setFont(new Font(&quot;Segoe UI&quot;, Font.BOLD, 14));</span>
+<span class="fc" id="L68">        btnVolver.setBackground(new Color(52, 73, 94));</span>
+<span class="fc" id="L69">        btnVolver.setForeground(Color.WHITE);</span>
+<span class="fc" id="L70">        btnVolver.setFocusPainted(false);</span>
+<span class="fc" id="L71">        btnVolver.setBorderPainted(false);</span>
+<span class="fc" id="L72">        btnVolver.setPreferredSize(new Dimension(140, 40));</span>
+<span class="fc" id="L73">        btnVolver.setCursor(new Cursor(Cursor.HAND_CURSOR));</span>
+<span class="pc" id="L74">        btnVolver.addActionListener(e -&gt; dispose());</span>
+<span class="fc" id="L75">        panel.add(btnVolver, BorderLayout.EAST);</span>
+        
+<span class="fc" id="L77">        return panel;</span>
+    }
+    
+    private JPanel crearPanelConfiguracion() {
+<span class="fc" id="L81">        JPanel panel = new JPanel();</span>
+<span class="fc" id="L82">        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));</span>
+<span class="fc" id="L83">        panel.setBackground(Color.WHITE);</span>
+<span class="fc" id="L84">        panel.setBorder(BorderFactory.createCompoundBorder(</span>
+            new TitledBorder(
+                new LineBorder(new Color(189, 195, 199), 2, true),
+                &quot; ️ Preferencias de Notificación &quot;,
+                TitledBorder.LEFT,
+                TitledBorder.TOP,
+                new Font(&quot;Segoe UI&quot;, Font.BOLD, 16),
+                new Color(52, 73, 94)
+            ),
+            new EmptyBorder(20, 20, 20, 20)
+        ));
+        
+        // Sección: Tipos de notificaciones
+<span class="fc" id="L97">        JPanel seccionTipos = crearSeccion(&quot;📧 Tipos de Notificaciones por Email&quot;);</span>
+        
+<span class="fc" id="L99">        chkConfirmacion = crearCheckBox(&quot;✅ Confirmación de Cita Agendada&quot;, true);</span>
+<span class="fc" id="L100">        chkRecordatorio = crearCheckBox(&quot;⏰ Recordatorio de Cita Próxima&quot;, true);</span>
+<span class="fc" id="L101">        chkCancelacion = crearCheckBox(&quot;❌ Notificación de Cancelación&quot;, true);</span>
+<span class="fc" id="L102">        chkReprogramacion = crearCheckBox(&quot;🔄 Notificación de Reprogramación&quot;, true);</span>
+        
+<span class="fc" id="L104">        seccionTipos.add(chkConfirmacion);</span>
+<span class="fc" id="L105">        seccionTipos.add(Box.createVerticalStrut(10));</span>
+<span class="fc" id="L106">        seccionTipos.add(chkRecordatorio);</span>
+<span class="fc" id="L107">        seccionTipos.add(Box.createVerticalStrut(10));</span>
+<span class="fc" id="L108">        seccionTipos.add(chkCancelacion);</span>
+<span class="fc" id="L109">        seccionTipos.add(Box.createVerticalStrut(10));</span>
+<span class="fc" id="L110">        seccionTipos.add(chkReprogramacion);</span>
+        
+        // Sección: Tiempo de recordatorio
+<span class="fc" id="L113">        JPanel seccionRecordatorio = crearSeccion(&quot;⏱️ Tiempo de Recordatorio&quot;);</span>
+        
+<span class="fc" id="L115">        JLabel lblTiempo = new JLabel(&quot;Enviar recordatorio:&quot;);</span>
+<span class="fc" id="L116">        lblTiempo.setFont(new Font(&quot;Segoe UI&quot;, Font.PLAIN, 14));</span>
+<span class="fc" id="L117">        lblTiempo.setForeground(new Color(52, 73, 94));</span>
+        
+<span class="fc" id="L119">        String[] opciones = {</span>
+            &quot;30 minutos antes&quot;,
+            &quot;1 hora antes&quot;,
+            &quot;2 horas antes&quot;,
+            &quot;12 horas antes&quot;,
+            &quot;24 horas antes (Recomendado)&quot;,
+            &quot;48 horas antes&quot;
+        };
+<span class="fc" id="L127">        comboRecordatorio = new JComboBox&lt;&gt;(opciones);</span>
+<span class="fc" id="L128">        comboRecordatorio.setSelectedIndex(4);</span>
+<span class="fc" id="L129">        comboRecordatorio.setFont(new Font(&quot;Segoe UI&quot;, Font.PLAIN, 13));</span>
+<span class="fc" id="L130">        comboRecordatorio.setMaximumSize(new Dimension(300, 30));</span>
+<span class="fc" id="L131">        comboRecordatorio.setAlignmentX(Component.LEFT_ALIGNMENT);</span>
+        
+<span class="fc" id="L133">        seccionRecordatorio.add(lblTiempo);</span>
+<span class="fc" id="L134">        seccionRecordatorio.add(Box.createVerticalStrut(8));</span>
+<span class="fc" id="L135">        seccionRecordatorio.add(comboRecordatorio);</span>
+        
+        // Sección: Información adicional
+<span class="fc" id="L138">        JPanel seccionInfo = crearPanelInfo();</span>
+        
+<span class="fc" id="L140">        panel.add(seccionTipos);</span>
+<span class="fc" id="L141">        panel.add(Box.createVerticalStrut(20));</span>
+<span class="fc" id="L142">        panel.add(seccionRecordatorio);</span>
+<span class="fc" id="L143">        panel.add(Box.createVerticalStrut(20));</span>
+<span class="fc" id="L144">        panel.add(seccionInfo);</span>
+<span class="fc" id="L145">        panel.add(Box.createVerticalGlue());</span>
+        
+<span class="fc" id="L147">        return panel;</span>
+    }
+    
+    private JPanel crearSeccion(String titulo) {
+<span class="fc" id="L151">        JPanel panel = new JPanel();</span>
+<span class="fc" id="L152">        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));</span>
+<span class="fc" id="L153">        panel.setBackground(Color.WHITE);</span>
+<span class="fc" id="L154">        panel.setAlignmentX(Component.LEFT_ALIGNMENT);</span>
+        
+<span class="fc" id="L156">        JLabel lblTitulo = new JLabel(titulo);</span>
+<span class="fc" id="L157">        lblTitulo.setFont(new Font(&quot;Segoe UI&quot;, Font.BOLD, 15));</span>
+<span class="fc" id="L158">        lblTitulo.setForeground(new Color(41, 128, 185));</span>
+<span class="fc" id="L159">        lblTitulo.setAlignmentX(Component.LEFT_ALIGNMENT);</span>
+        
+<span class="fc" id="L161">        panel.add(lblTitulo);</span>
+<span class="fc" id="L162">        panel.add(Box.createVerticalStrut(12));</span>
+        
+<span class="fc" id="L164">        return panel;</span>
+    }
+    
+    private JCheckBox crearCheckBox(String texto, boolean seleccionado) {
+<span class="fc" id="L168">        JCheckBox check = new JCheckBox(texto);</span>
+<span class="fc" id="L169">        check.setFont(new Font(&quot;Segoe UI&quot;, Font.PLAIN, 14));</span>
+<span class="fc" id="L170">        check.setBackground(Color.WHITE);</span>
+<span class="fc" id="L171">        check.setSelected(seleccionado);</span>
+<span class="fc" id="L172">        check.setFocusPainted(false);</span>
+<span class="fc" id="L173">        check.setAlignmentX(Component.LEFT_ALIGNMENT);</span>
+<span class="fc" id="L174">        check.setCursor(new Cursor(Cursor.HAND_CURSOR));</span>
+<span class="fc" id="L175">        return check;</span>
+    }
+    
+    private JPanel crearPanelInfo() {
+<span class="fc" id="L179">        JPanel panel = new JPanel();</span>
+<span class="fc" id="L180">        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));</span>
+<span class="fc" id="L181">        panel.setBackground(new Color(174, 214, 241));</span>
+<span class="fc" id="L182">        panel.setBorder(BorderFactory.createCompoundBorder(</span>
+            new LineBorder(new Color(41, 128, 185), 2, true),
+            new EmptyBorder(15, 15, 15, 15)
+        ));
+<span class="fc" id="L186">        panel.setAlignmentX(Component.LEFT_ALIGNMENT);</span>
+        
+<span class="fc" id="L188">        JLabel lblTitulo = new JLabel(&quot; Información&quot;);</span>
+<span class="fc" id="L189">        lblTitulo.setFont(new Font(&quot;Segoe UI&quot;, Font.BOLD, 14));</span>
+<span class="fc" id="L190">        lblTitulo.setForeground(new Color(21, 67, 96));</span>
+        
+<span class="fc" id="L192">        JTextArea txtInfo = new JTextArea(</span>
+            &quot;• Las notificaciones se envían a tu email registrado\n&quot; +
+            &quot;• Puedes cambiar estas preferencias en cualquier momento\n&quot; +
+            &quot;• Los recordatorios te ayudan a no olvidar tus citas\n&quot; +
+            &quot;• Todas las notificaciones incluyen un enlace para gestionar tu cita&quot;
+        );
+<span class="fc" id="L198">        txtInfo.setFont(new Font(&quot;Segoe UI&quot;, Font.PLAIN, 12));</span>
+<span class="fc" id="L199">        txtInfo.setForeground(new Color(21, 67, 96));</span>
+<span class="fc" id="L200">        txtInfo.setBackground(new Color(174, 214, 241));</span>
+<span class="fc" id="L201">        txtInfo.setEditable(false);</span>
+<span class="fc" id="L202">        txtInfo.setLineWrap(true);</span>
+<span class="fc" id="L203">        txtInfo.setWrapStyleWord(true);</span>
+<span class="fc" id="L204">        txtInfo.setBorder(null);</span>
+        
+<span class="fc" id="L206">        panel.add(lblTitulo);</span>
+<span class="fc" id="L207">        panel.add(Box.createVerticalStrut(10));</span>
+<span class="fc" id="L208">        panel.add(txtInfo);</span>
+        
+<span class="fc" id="L210">        return panel;</span>
+    }
+    
+    private JPanel crearPanelVistaPrev() {
+<span class="fc" id="L214">        JPanel panel = new JPanel(new BorderLayout(10, 10));</span>
+<span class="fc" id="L215">        panel.setBackground(Color.WHITE);</span>
+<span class="fc" id="L216">        panel.setBorder(BorderFactory.createCompoundBorder(</span>
+            new TitledBorder(
+                new LineBorder(new Color(189, 195, 199), 2, true),
+                &quot; 📧 Vista Previa del Email &quot;,
+                TitledBorder.LEFT,
+                TitledBorder.TOP,
+                new Font(&quot;Segoe UI&quot;, Font.BOLD, 16),
+                new Color(52, 73, 94)
+            ),
+            new EmptyBorder(20, 20, 20, 20)
+        ));
+        
+<span class="fc" id="L228">        JLabel lblTipoEmail = new JLabel(&quot;Tipo: Confirmación de Cita&quot;);</span>
+<span class="fc" id="L229">        lblTipoEmail.setFont(new Font(&quot;Segoe UI&quot;, Font.BOLD, 14));</span>
+<span class="fc" id="L230">        lblTipoEmail.setForeground(new Color(46, 204, 113));</span>
+        
+<span class="fc" id="L232">        txtPreviewEmail = new JTextArea();</span>
+<span class="fc" id="L233">        txtPreviewEmail.setFont(new Font(&quot;Monospaced&quot;, Font.PLAIN, 12));</span>
+<span class="fc" id="L234">        txtPreviewEmail.setEditable(false);</span>
+<span class="fc" id="L235">        txtPreviewEmail.setLineWrap(true);</span>
+<span class="fc" id="L236">        txtPreviewEmail.setWrapStyleWord(true);</span>
+<span class="fc" id="L237">        txtPreviewEmail.setBorder(new EmptyBorder(10, 10, 10, 10));</span>
+<span class="fc" id="L238">        txtPreviewEmail.setText(generarPreviewEmail());</span>
+        
+<span class="fc" id="L240">        JScrollPane scrollPane = new JScrollPane(txtPreviewEmail);</span>
+<span class="fc" id="L241">        scrollPane.setBorder(new LineBorder(new Color(189, 195, 199), 1));</span>
+        
+<span class="fc" id="L243">        JPanel panelTipo = new JPanel(new FlowLayout(FlowLayout.LEFT));</span>
+<span class="fc" id="L244">        panelTipo.setBackground(Color.WHITE);</span>
+<span class="fc" id="L245">        panelTipo.add(lblTipoEmail);</span>
+        
+<span class="fc" id="L247">        JComboBox&lt;String&gt; comboTipoPreview = new JComboBox&lt;&gt;(new String[]{</span>
+            &quot;Confirmación de Cita&quot;,
+            &quot;Recordatorio 24h&quot;,
+            &quot;Notificación de Cancelación&quot;,
+            &quot;Notificación de Reprogramación&quot;
+        });
+<span class="fc" id="L253">        comboTipoPreview.setFont(new Font(&quot;Segoe UI&quot;, Font.PLAIN, 13));</span>
+<span class="fc" id="L254">        panelTipo.add(Box.createHorizontalStrut(10));</span>
+<span class="fc" id="L255">        panelTipo.add(comboTipoPreview);</span>
+        
+<span class="fc" id="L257">        panel.add(panelTipo, BorderLayout.NORTH);</span>
+<span class="fc" id="L258">        panel.add(scrollPane, BorderLayout.CENTER);</span>
+        
+<span class="fc" id="L260">        return panel;</span>
+    }
+    
+    private String generarPreviewEmail() {
+<span class="fc" id="L264">        return &quot;═══════════════════════════════════════════════════\n&quot; +</span>
+               &quot;  SISTEMA DE GESTIÓN DE CITAS\n&quot; +
+               &quot;═══════════════════════════════════════════════════\n\n&quot; +
+               &quot;Estimado/a Usuario,\n\n&quot; +
+               &quot;Su cita ha sido CONFIRMADA exitosamente.\n\n&quot; +
+               &quot;DETALLES DE LA CITA:\n&quot; +
+               &quot;───────────────────────────────────────────────────\n&quot; +
+               &quot;Número de Referencia: #1045\n&quot; +
+               &quot;Fecha: Viernes, 24 de Enero de 2026\n&quot; +
+               &quot;Hora: 10:00 AM\n&quot; +
+               &quot;Estado: Confirmada\n\n&quot; +
+               &quot;OPCIONES DISPONIBLES:\n&quot; +
+               &quot;───────────────────────────────────────────────────\n&quot; +
+               &quot;• Puede cancelar su cita hasta 2 horas antes\n&quot; +
+               &quot;• Puede reprogramar su cita en cualquier momento\n&quot; +
+               &quot;• Recibirá un recordatorio 24 horas antes\n\n&quot; +
+               &quot;Para gestionar su cita, haga clic aquí:\n&quot; +
+               &quot;https://sistema-citas.com/mi-cita/1045\n\n&quot; +
+               &quot;IMPORTANTE:\n&quot; +
+               &quot;Si no puede asistir, por favor cancele su cita con\n&quot; +
+               &quot;anticipación para que otros usuarios puedan aprovechar\n&quot; +
+               &quot;ese horario.\n\n&quot; +
+               &quot;Gracias por utilizar nuestro sistema.\n\n&quot; +
+               &quot;───────────────────────────────────────────────────\n&quot; +
+               &quot;Este es un mensaje automático, por favor no responda.\n&quot; +
+               &quot;═══════════════════════════════════════════════════&quot;;
+    }
+    
+    private JPanel crearPanelBotones() {
+<span class="fc" id="L293">        JPanel panel = new JPanel(new FlowLayout(FlowLayout.CENTER, 15, 15));</span>
+<span class="fc" id="L294">        panel.setBackground(new Color(236, 240, 241));</span>
+<span class="fc" id="L295">        panel.setBorder(new EmptyBorder(10, 10, 10, 10));</span>
+        
+<span class="fc" id="L297">        btnRestaurar = crearBoton(&quot; Restaurar Defaults&quot;, new Color(149, 165, 166));</span>
+<span class="fc" id="L298">        btnProbar = crearBoton(&quot; Enviar Email de Prueba&quot;, new Color(52, 152, 219));</span>
+<span class="fc" id="L299">        btnGuardar = crearBoton(&quot; Guardar Configuración&quot;, new Color(46, 204, 113));</span>
+        
+<span class="fc" id="L301">        panel.add(btnRestaurar);</span>
+<span class="fc" id="L302">        panel.add(btnProbar);</span>
+<span class="fc" id="L303">        panel.add(btnGuardar);</span>
+        
+<span class="fc" id="L305">        return panel;</span>
+    }
+    
+    private JButton crearBoton(String texto, Color color) {
+<span class="fc" id="L309">        JButton btn = new JButton(texto);</span>
+<span class="fc" id="L310">        btn.setFont(new Font(&quot;Segoe UI&quot;, Font.BOLD, 14));</span>
+<span class="fc" id="L311">        btn.setBackground(color);</span>
+<span class="fc" id="L312">        btn.setForeground(Color.WHITE);</span>
+<span class="fc" id="L313">        btn.setFocusPainted(false);</span>
+<span class="fc" id="L314">        btn.setBorderPainted(false);</span>
+<span class="fc" id="L315">        btn.setPreferredSize(new Dimension(220, 45));</span>
+<span class="fc" id="L316">        btn.setCursor(new Cursor(Cursor.HAND_CURSOR));</span>
+        
+<span class="fc" id="L318">        btn.addMouseListener(new java.awt.event.MouseAdapter() {</span>
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+<span class="nc" id="L320">                btn.setBackground(color.darker());</span>
+<span class="nc" id="L321">            }</span>
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+<span class="nc" id="L323">                btn.setBackground(color);</span>
+<span class="nc" id="L324">            }</span>
+        });
+        
+        // Solo efecto visual, sin funcionalidad
+<span class="fc" id="L328">        btn.addActionListener(e -&gt; </span>
+<span class="nc" id="L329">            JOptionPane.showMessageDialog(this, </span>
+                &quot;MOCKUP: Esta funcionalidad se implementará en la versión completa\n\n&quot; +
+                &quot;En la versión final:\n&quot; +
+                &quot;• Se guardará la configuración en la base de datos\n&quot; +
+                &quot;• Se enviarán emails reales según las preferencias\n&quot; +
+                &quot;• Se podrá probar el envío de notificaciones&quot;,
+                &quot;Prototipo No Funcional&quot;, 
+                JOptionPane.INFORMATION_MESSAGE)
+        );
+        
+<span class="fc" id="L339">        return btn;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>
